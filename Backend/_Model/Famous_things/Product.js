@@ -1,7 +1,10 @@
 const mongooes = require("mongoose");
 
 const productSchema = new mongooes.Schema({
-   productId: { type: mongooes.Schema.Types.ObjectId, default: mongooes.Types.ObjectId, },
+   productId: {
+      type: mongooes.Schema.Types.ObjectId,
+      default: () => new mongooes.Types.ObjectId(),
+   },
    stateId: mongooes.Schema.Types.ObjectId,
    State_name: String,
    product_name: String,
