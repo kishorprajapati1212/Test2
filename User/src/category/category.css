@@ -1,0 +1,27 @@
+.about{
+  margin-top:50px;
+  margin-left: 20px;
+}
+
+
+.card {
+  margin-top:50px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  text-align: center;
+  background-color: #ffff;
+  transition: transform 0.2s;
+  margin-left: 150px;
+}
+
+.card:hover {
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px);
+}
+
+.column {
+  float: left;
+  width: 30%;
+  padding: 10px 10px;
+}
+

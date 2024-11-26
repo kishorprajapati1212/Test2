@@ -1,0 +1,150 @@
+.title p{ 
+    /* je HISTORY title chhe e*/
+    /* margin: 20px; */
+    font-size: 40px;
+}
+/* History */
+/* ************* */
+.history_card{
+    /* margin: 10px; */
+    width: 100%;
+    padding: 10px 30px;
+    /* background-color: whitesmoke; */
+}
+.title
+{
+    margin: 25px;
+    text-align: center;
+    font-size: 40px;
+    
+}
+
+.history_card .cards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.war .war_internal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.war .war_internal{ 
+    /* /andar na text ane button mate/ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+.origin .og_internal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+}
+
+.war_internal p{ 
+    /* /Text War Heading/ */
+    font-size: 40px;
+    font-weight: 500;
+    color:black;
+    opacity:100%;
+    font-weight: 600;
+}
+
+.war{ 
+    /* /main war card/ */
+    height: 25em;
+    width: 50%;
+    background-image: url('/public/Photes/UT.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 80px;
+    opacity:100%;
+
+}
+
+.origin{ 
+    /* /main origin card/ */
+    height: 25em;
+    width: 50%;
+    background-image: url('/public/Photes/UT.jpg');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 80px;
+    
+}
+
+.og_internal p{ 
+    /* /Text War Heading/ */
+    font-size: 40px;
+    font-weight: 500;
+    color: black;
+    opacity:100%;
+    font-weight: 600;
+}
+
+.war button{
+    cursor: pointer;
+}
+
+.origin button
+{
+    cursor: pointer;
+}
+
+.war button{
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    color: black;
+}
+.origin button{
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    color: black;
+}
+
+.war, .origin {
+    /* ... other properties ... */
+    position: relative; /* Necessary for absolute positioning of internal elements */
+  }
+  
+  .war .war_internal, .origin .og_internal {
+    /* ... other properties ... */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.2s ease-out 0s;  /* Smooth transition on hover */
+  }
+  
+  .war:hover .war_internal, .origin:hover .og_internal {
+    opacity: 0.8; 
+    /* Visible on hover */
+    
+  }
+
+  .war:hover, .origin:hover{
+    opacity: 0.8;
+    transform: scale(1.04);
+    transition: transform 0.1s ease-out 0s,opacity 0.2s ease;
+  }
