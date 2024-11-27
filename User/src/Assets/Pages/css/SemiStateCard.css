@@ -1,0 +1,87 @@
+/* Container for each card */
+.card {
+    position: relative;
+    width: 250px;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  /* Hover effect for the card */
+  .card:hover {
+    transform: translateY(-10px); /* Slightly raise the card on hover */
+  }
+  
+  /* Card content styles */
+  .card-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Image styles */
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Text (description) that appears on hover */
+  .card-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: 80%;
+    transition: all 0.3s ease;
+  }
+  
+  /* On hover, make the description visible and slide it */
+  .card:hover .card-text {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Customizing the hover behavior for description */
+  .card:hover .card-text {
+    transform: translate(-50%, -50%);
+    /* You can position it left or right */
+  }
+  
+  .card:hover .card-text p {
+    transform: translateX(10px); /* Adjust the description to the right */
+  }
+  
+  /* Optional: For a more dynamic hover, make it move from left or right */
+  .card-text-left {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) translateX(-100%);
+  }
+  
+  .card-text-right {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(100%);
+  }
+  
+  .card:hover .card-text-left {
+    left: -100%;
+  }
+  
+  .card:hover .card-text-right {
+    left: 100%;
+  }
+  
+  

@@ -1,0 +1,215 @@
+.title p{ 
+    /* je HISTORY title chhe e*/
+    /* margin: 20px; */
+    font-size: 40px;
+}
+/* History */
+/* ************* */
+.history_card{
+    /* margin: 10px; */
+    width: 100%;
+    padding: 10px 30px;
+    /* background-color: whitesmoke; */
+}
+.title
+{
+    margin: 25px;
+    text-align: center;
+    font-size: 40px;
+    
+}
+
+.history_card .cards{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.war .war_internal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.war .war_internal{ 
+    /* /andar na text ane button mate/ */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: white;
+}
+
+.origin .og_internal{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+}
+
+.war_internal p{ 
+    /* /Text War Heading/ */
+    font-size: 40px;
+    font-weight: 500;
+    color:black;
+    opacity:100%;
+    font-weight: 600;
+}
+
+.war{ 
+    /* /main war card/ */
+    height: 25em;
+    width: 50%;
+    background-image: url('/public/Slider_img/nature.png');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 80px;
+    opacity:100%;
+
+}
+
+.origin{ 
+    /* /main origin card/ */
+    height: 25em;
+    width: 50%;
+    background-image: url('/public/Slider_img/nature.png');
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 80px;
+    
+}
+
+.og_internal p{ 
+    /* /Text War Heading/ */
+    font-size: 40px;
+    font-weight: 500;
+    color: black;
+    opacity:100%;
+    font-weight: 600;
+}
+
+.war button{
+    cursor: pointer;
+}
+
+.origin button
+{
+    cursor: pointer;
+}
+
+.war button{
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    color: black;
+}
+.origin button{
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    color: black;
+}
+
+.war, .origin {
+    /* ... other properties ... */
+    position: relative; /* Necessary for absolute positioning of internal elements */
+  }
+  
+  .war .war_internal, .origin .og_internal {
+    /* ... other properties ... */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.2s ease-out 0s;  /* Smooth transition on hover */
+  }
+  
+  .war:hover .war_internal, .origin:hover .og_internal {
+    opacity: 0.8; 
+    /* Visible on hover */
+    
+  }
+
+  .war:hover, .origin:hover{
+    opacity: 0.8;
+    transform: scale(1.04);
+    transition: transform 0.1s ease-out 0s,opacity 0.2s ease;
+  }
+
+  .history_card {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    width: 300px;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card_image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card_content {
+    padding: 15px;
+    text-align: center;
+}
+
+.card_content p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #555;
+}
+
+.card_content button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.card_content button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,26 @@
+/* Slider container */
+.slider {
+    width: 100%; /* Full width */
+    overflow: hidden; /* Hide the overflowing images */
+    position: relative; /* Relative for proper layout */
+  }
+  
+  /* Image wrapper for horizontal sliding */
+  .slider-images {
+    display: flex; /* Align images in a row */
+    transition: transform 0.5s ease-in-out; /* Smooth sliding */
+    width: 100%; /* Ensures the wrapper takes full width */
+  }
+  
+  /* Individual slide */
+  .slide {
+    min-width: 100%; /* Each slide takes up full width of the slider */
+    height: auto;
+  }
+  
+  .slide img {
+    width: 100%; /* Ensures the image scales to fill the slider */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra spacing */
+  }
+  

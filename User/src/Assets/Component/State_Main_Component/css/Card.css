@@ -1,0 +1,33 @@
+.title p{ 
+    /* je HISTORY title chhe e*/
+    /* margin: 20px; */
+    font-size: 40px;
+  }
+  
+  .about{
+      margin-top:50px;
+      margin-left: 20px;
+  }
+  
+  
+  .card {
+      margin-top:50px;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      text-align: center;
+      background-color: #ffff;
+      transition: 0.3s;
+      margin-left: 150px;
+    }
+    
+    .card:hover {
+      box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.4);
+    }
+    
+    .column {
+      float: left;
+      width: 30%;
+      padding: 10px 10px;
+    }
+    
+  
