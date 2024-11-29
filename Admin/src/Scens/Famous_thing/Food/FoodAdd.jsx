@@ -4,12 +4,14 @@ import {
   Button,
   Box,
   Typography,
+  CircularProgress 
 } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 import axios from "axios";
 
 const FoodAdd = () => {
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
+  const [loading, setLoading] = useState(false); // Loading state
 
   const [foodData, setFoodData] = useState({
     food_name: "",
@@ -58,10 +60,14 @@ const FoodAdd = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // Set loading to true
+
     console.log("Food Data Submitted:", foodData);
     const res = await axios.post(`${Backend_url}/Add_food`, foodData);
     console.log(res);
     if (res.status === 200) {
+      setLoading(false); // Set loading to false
+
       setFoodData({
         food_name: "",
         food_image: [],
@@ -73,6 +79,8 @@ const FoodAdd = () => {
         state_name: "",
       });
     }
+    setLoading(false); // Set loading to false
+
   };
 
   return (
@@ -157,8 +165,12 @@ const FoodAdd = () => {
       </Box>
 
       {/* Submit Button */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}
+      disabled={loading} // Disable button when loading
+      startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+      >
+      {loading ? "Submitting..." : "Submit"}
+        
       </Button>
     </Box>
   );

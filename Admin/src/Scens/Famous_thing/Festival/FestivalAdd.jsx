@@ -4,12 +4,14 @@ import {
   Button,
   Box,
   Typography,
+  CircularProgress 
 } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 import axios from "axios";
 
 const FestivalAdd = () => {
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
+  const [loading, setLoading] = useState(false); // Loading state
 
   const [festivalData, setFestivalData] = useState({
     festival_name: "",
@@ -60,10 +62,14 @@ const FestivalAdd = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // Set loading to true
+
     console.log("Festival Data Submitted:", festivalData);
     const res = await axios.post(`${Backend_url}/Add_festival`, festivalData);
     console.log(res);
     if (res.status === 200) {
+      setLoading(false); // Set loading to false
+
       setFestivalData({
         festival_name: "",
         Festival_image: [],
@@ -77,6 +83,8 @@ const FestivalAdd = () => {
         state_name: "",
       });
     }
+    setLoading(false); // Set loading to false
+
   };
 
   return (
@@ -185,8 +193,12 @@ const FestivalAdd = () => {
       </Box>
 
       {/* Submit Button */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit} 
+      disabled={loading} // Disable button when loading
+        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null} 
+        >
+        {loading ? "Submitting..." : "Submit"}
+
       </Button>
     </Box>
   );

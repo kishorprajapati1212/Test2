@@ -72,6 +72,7 @@ const ShortHome = () => {
               <TableCell>Short Title</TableCell>
               <TableCell>Short Description</TableCell>
               <TableCell>Creator Name</TableCell>
+              <TableCell>Image</TableCell> {/* Add the Image column */}
               <TableCell>Video URL</TableCell>
               <TableCell>Action</TableCell>
             </TableRow>
@@ -82,6 +83,20 @@ const ShortHome = () => {
                 <TableCell>{short.short_title}</TableCell>
                 <TableCell>{short.short_description.slice(0, 15)}</TableCell>
                 <TableCell>{short.creater_name}</TableCell>
+
+                {/* Image Column */}
+                <TableCell>
+                  {short.short_image ? (
+                    <img
+                      src={short.short_image} // Assuming `short_image` is the image URL
+                      alt={short.short_title}
+                      style={{ width: "100px", height: "auto" }}
+                    />
+                  ) : (
+                    <Typography>No Image</Typography>
+                  )}
+                </TableCell>
+
                 <TableCell>
                   <a
                     href={short.short_url}
@@ -137,7 +152,7 @@ const ShortHome = () => {
         onConfirm={handleDelete}
       >
         <Typography>Are you sure you want to delete this short?</Typography>
-      </Deletepopup >
+      </Deletepopup>
     </div>
   );
 };

@@ -11,7 +11,10 @@ const Placeroute = require("./_Routes/Famous_things/Placeroute")
 const Foodroute = require("./_Routes/Famous_things/Foodroute")
 const Productroute = require("./_Routes/Famous_things/Productroute")
 const Festiveroute = require("./_Routes/Famous_things/Festivalroute")
+const userroute = require("./_Routes/Users/Userroute")
 const Danceroute = require("./_Routes/Famous_things/Danceroute")
+const state_slider = require("./_UserRoutes/State/State_slider")
+
 
 const app = express();
 const httpServer = createServer(app); // Create an HTTP server
@@ -35,6 +38,8 @@ app.use(Foodroute)
 app.use(Festiveroute)
 app.use(Productroute)
 app.use(Danceroute)
+app.use(state_slider)
+app.use(userroute)
 
 // CLOUDINARY_CLOUD_NAME= dsjex8xtn
 // CLOUDINARY_API_KEY= 662524432854229

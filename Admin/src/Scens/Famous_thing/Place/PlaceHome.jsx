@@ -34,17 +34,23 @@ const PlaceHome = () => {
     console.log(place);
 
     const handleDelete = async () => {
-        if(selectedplace){
-            const res = await axios.get(`${Backend_url}/Delete_place/${selectedplace.HeritageId}`);
-            if(res.status == 200){
-                setPopupOpen(false);
-                setselectedplace((prev) => 
-                    prev.filter((place) => place.HeritageId !== selectedplace.HeritageId)
-                );
-                
+        if (selectedplace) {
+            try {
+                const res = await axios.get(`${Backend_url}/Delete_place/${selectedplace.HeritageId}`);
+                if (res.status === 200) {
+                    setPopupOpen(false);
+                    // Update `place` state by removing the deleted place
+                    setplace((prevPlaces) =>
+                        prevPlaces.filter((place) => place.HeritageId !== selectedplace.HeritageId)
+                    );
+                    setselectedplace(null); // Clear the selected place
+                }
+            } catch (error) {
+                console.error("Error deleting place:", error);
             }
         }
-    }
+    };
+    
 
     return (
         <>

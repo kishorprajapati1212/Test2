@@ -3,92 +3,59 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
     Button,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Select,
     TextField,
-    Typography,
     Box,
     Input,
+    Typography,
 } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 
 const Backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const ProductUpdate = () => {
-    const { HeritageId } = useParams(); // Retrieve HeritageId from the URL
-    const [placeData, setPlaceData] = useState({
-        place_name: "",
+    const { productId } = useParams(); // Retrieve productId from the URL
+    const [productData, setProductData] = useState({
+        product_name: "",
         state_name: "",
-        builder: "",
-        Period: "",
-        place_type: "",
-        google_map_url: "",
-        place_image: [], // Array for images
-        location: "", // Add location field
+        product_category: "",
+        product_images: [],
+        product_description: [], // Add description field as array
+        contact: [], // Add contact field as array
     });
-    const [existingImages, setExistingImages] = useState([]); // Hold current images from backend
-    const [newImages, setNewImages] = useState([]); // Hold newly uploaded images
-    const [loading, setLoading] = useState(true); // Track loading state
+    const [existingImages, setExistingImages] = useState([]);
+    const [newImages, setNewImages] = useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // Function to extract latitude and longitude from Google Maps URL
-    const extractLatLongFromURL = (url) => {
-        const regex = /@([0-9.-]+),([0-9.-]+)/;
-        const match = url.match(regex);
-        if (match) {
-            return {
-                latitude: match[1],
-                longitude: match[2],
-            };
-        }
-        return { latitude: "", longitude: "" }; // Return empty strings if no match
-    };
-
-    // Fetch place data by HeritageId
+    // Fetch product data by productId
     useEffect(() => {
-        const fetchPlaceData = async () => {
+        const fetchProductData = async () => {
             try {
-                const res = await axios.get(`${Backend_url}/Get_place_by_id/${HeritageId}`);
-                setPlaceData(res.data); // Populate the form with the fetched data
-                setExistingImages(res.data.place_image || []); // Set existing images
+                const res = await axios.get(`${Backend_url}/Get_product_by_id/${productId}`);
+                setProductData(res.data); // Populate the form with the fetched data
+                setExistingImages(res.data.product_images || []);
                 setLoading(false);
             } catch (error) {
-                console.error("Error fetching place data", error);
+                console.error("Error fetching product data", error);
             }
         };
 
-        fetchPlaceData();
-    }, [HeritageId]);
+        fetchProductData();
+    }, [productId]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setPlaceData((prevData) => ({
+        setProductData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
     };
 
     const handleStateChange = (selectedState) => {
-        setPlaceData((prevData) => ({
+        setProductData((prevData) => ({
             ...prevData,
             state_name: selectedState.state_name,
             stateId: selectedState.stateId,
-        }));
-    };
-
-    const handleGoogleMapUrlChange = (e) => {
-        const url = e.target.value;
-        const { latitude, longitude } = extractLatLongFromURL(url);
-
-        // Update location field with latitude and longitude
-        const location = latitude && longitude ? `${latitude}, ${longitude}` : "";
-
-        setPlaceData((prevData) => ({
-            ...prevData,
-            google_map_url: url,
-            location: location, // Save the latitude and longitude in the location field
         }));
     };
 
@@ -115,25 +82,38 @@ const ProductUpdate = () => {
         setNewImages((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleUpdatePlace = async () => {
-        const updatedPlace = {
-            ...placeData,
-            place_image: [...existingImages, ...newImages], // Combine existing and new images
+    const handleUpdateProduct = async () => {
+        const updatedProduct = {
+            ...productData,
+            product_images: [...existingImages, ...newImages],
         };
 
         try {
-            const response = await axios.post(
-                `${Backend_url}/Update_place/${HeritageId}`,
-                updatedPlace
-            );
-            if(response.status == 200){
-                console.log("Place updated successfully", response);
-                navigate("/place_home"); // Redirect after update
+            console.log(updatedProduct);
+            const response = await axios.post(`${Backend_url}/Update_product/${productId}`, updatedProduct);
+            if (response.status === 200) {
+                console.log("Product updated successfully", response);
+                navigate("/product_home"); // Redirect after update
             }
-            
         } catch (error) {
-            console.error("Error updating place", error);
+            console.error("Error updating product", error);
         }
+    };
+
+    const handleContactInfoChange = (index, field, value) => {
+        const updatedContact = [...productData.contact];
+        updatedContact[index][field] = value;
+        setProductData((prevData) => ({
+            ...prevData,
+            contact: updatedContact,
+        }));
+    };
+
+    const addContactInfo = () => {
+        setProductData((prevData) => ({
+            ...prevData,
+            contact: [...prevData.contact, { name: "", email: "", phone: "", preference: false }],
+        }));
     };
 
     if (loading) {
@@ -143,79 +123,52 @@ const ProductUpdate = () => {
     return (
         <>
             <Typography variant="h4" gutterBottom>
-                Update Place Details
+                Update Product Details
             </Typography>
 
             <Box component="form" sx={{ mt: 2, display: "flex", flexDirection: "column" }}>
                 <TextField
-                    label="Place Name"
-                    name="place_name"
-                    value={placeData.place_name}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                />
-
-                <FormControl fullWidth margin="normal">
-                    <StateDropdown
-                        selectedState={placeData}
-                        onStateChange={handleStateChange}
-                    />
-                </FormControl>
-
-                <TextField
-                    label="Builder"
-                    name="builder"
-                    value={placeData.builder}
+                    label="Product Name"
+                    name="product_name"
+                    value={productData.product_name}
                     onChange={handleInputChange}
                     fullWidth
                     margin="normal"
                 />
 
                 <TextField
-                    label="Period"
-                    name="Period"
-                    value={placeData.Period}
-                    onChange={handleInputChange}
+                    label="Product Description"
+                    name="product_description"
+                    value={productData.product_description.join(", ")} // Joining the array for display
+                    onChange={(e) => {
+                        // Update product description array with words separated by commas
+                        const updatedDescription = e.target.value.split(",").map(item => item.trim());
+                        setProductData((prevData) => ({
+                            ...prevData,
+                            product_description: updatedDescription,
+                        }));
+                    }}
                     fullWidth
                     margin="normal"
+                    multiline
                 />
 
-                <FormControl fullWidth margin="normal">
-                    <InputLabel>Place Type</InputLabel>
-                    <Select
-                        name="place_type"
-                        value={placeData.place_type}
-                        onChange={handleInputChange}
-                        label="Place Type"
-                    >
-                        {placeTypes.map((type, index) => (
-                            <MenuItem key={index} value={type}>
-                                {type}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <TextField
-                    label="Google Map URL"
-                    name="google_map_url"
-                    value={placeData.google_map_url}
-                    onChange={handleGoogleMapUrlChange}
-                    fullWidth
-                    margin="normal"
+                <StateDropdown
+                    selectedState={productData}
+                    onStateChange={handleStateChange}
                 />
 
                 <TextField
-                    label="Location (Latitude, Longitude)"
-                    name="location"
-                    value={placeData.location}
+                    label="Product Category"
+                    name="product_category"
+                    value={productData.product_category}
                     onChange={handleInputChange}
                     fullWidth
                     margin="normal"
                 />
 
                 {/* Image Upload */}
+                <Typography variant="body1" sx={{ marginBottom: 1 }}>Upload Images</Typography>
                 <Input
                     type="file"
                     accept="image/*"
@@ -236,7 +189,7 @@ const ProductUpdate = () => {
                                 />
                                 <Button
                                     onClick={() => removeExistingImage(index)}
-                                    style={{ position: "absolute", top: 0, right: 0, color: "black" }}
+                                    style={{ position: "absolute", top: 0, right: 0 }}
                                 >
                                     X
                                 </Button>
@@ -266,13 +219,56 @@ const ProductUpdate = () => {
                     </div>
                 )}
 
+                {/* Contact Information */}
+                {productData.contact.map((contact, index) => (
+                    <div key={index} style={{ marginBottom: "10px" }}>
+                        <TextField
+                            label="Name"
+                            value={contact.name}
+                            onChange={(e) => handleContactInfoChange(index, "name", e.target.value)}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label="Email"
+                            value={contact.email}
+                            onChange={(e) => handleContactInfoChange(index, "email", e.target.value)}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <TextField
+                            label="Phone"
+                            value={contact.phone}
+                            onChange={(e) => handleContactInfoChange(index, "phone", e.target.value)}
+                            fullWidth
+                            margin="normal"
+                        />
+                        <Button
+                            variant="outlined"
+                            onClick={() => handleContactInfoChange(index, "preference", !contact.preference)}
+                        >
+                            {contact.preference ? "Preferred" : "Not Preferred"}
+                        </Button>
+                    </div>
+                ))}
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={addContactInfo}
+                    sx={{ mt: 2 }}
+                >
+                    Add Contact Info
+                </Button>
+
+                
+
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleUpdatePlace}
-                    sx={{ mt: 2 }}
+                    onClick={handleUpdateProduct}
+                    sx={{ mt: 3 }}
                 >
-                    Update Place
+                    Update Product
                 </Button>
             </Box>
         </>

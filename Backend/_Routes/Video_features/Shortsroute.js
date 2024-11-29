@@ -54,7 +54,7 @@ const upload = multer({ storage });
 // Route to upload and save video
 router.post("/uploadShort", upload.single("video"), async (req, res) => {
     try {
-        const { createrId, creater_name, short_title, short_description, short_image } = req.body;
+        const { createrId, creater_name, short_title, short_description, short_image, short_ad } = req.body;
         // console.log("Uploaded File Info:", req.file);
 
         // Validate required fields
@@ -76,11 +76,13 @@ router.post("/uploadShort", upload.single("video"), async (req, res) => {
             short_description,
             short_like: 0,
             short_url: uploadResponse.secure_url, // Save Cloudinary URL
+            short_image: short_image,
+            short_ad:short_ad,
         });
 
         const savedShort = await newShort.save();
 
-        res.status(201).json({
+        res.status(200).json({
             message: "Short uploaded and saved successfully!",
             short: savedShort,
         });
@@ -109,26 +111,29 @@ router.get("/deleteShort/:videoId", async (req, res) => {
 
         // console.log("Found Short:", short);
 
-        // Extract public ID from secure_url
+        // Extract public ID from secure_url 
         const secureUrl = short.short_url;
 
         const publicId = secureUrl
-            .split('/upload/')[1] // Take everything after '/upload/'
-            .replace(/v\d+\//, '') // Remove the version prefix (e.g., v123456789/)
+            .split('/upload/')[1] // Everything after '/upload/'
+            .replace(/v\d+\//, '') // Remove the version (e.g., v123456789/)
             .split('.')[0]; // Remove the file extension
 
-        // console.log("Corrected Public ID:", publicId);
+
+        console.log("Corrected Public ID:", publicId);
 
         const deleteResponse = await cloudinary.uploader.destroy(publicId, {
-            resource_type: "video", 
+            resource_type: "video",
         });
 
         console.log("Cloudinary Delete Response:", deleteResponse);
+        // const shorts = await shortVideoModel.findOneAndDelete({ videoId: req.params.videoId });
 
         if (deleteResponse.result === "ok") {
-            const short = await shortVideoModel.findOneAndDelete({videoId:req.params.videoId});
+            const short = await shortVideoModel.findOneAndDelete({ videoId: req.params.videoId });
             res.status(200).json(short);
         }
+
     } catch (error) {
         res.status(500).json({ error: "Failed to upload and save short", details: error.message });
     }

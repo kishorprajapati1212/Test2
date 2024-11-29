@@ -2,6 +2,7 @@ import React from "react";
 import Sidebars from "./Global_Component/Sidebar";
 import Approutes from "./Approutes";
 import Theme from "./Theme";
+import TranslationApp from "./Scens/UI/TranslationApp";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
 
       {/* Main Content */}
       <div style={{ flex: 1, overflow: "auto" }}>
+        {/* <TranslationApp /> */}
         <Approutes />
       </div>
     </div>

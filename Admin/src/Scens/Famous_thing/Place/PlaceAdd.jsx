@@ -8,6 +8,7 @@ import {
   InputLabel,
   Box,
   Typography,
+  CircularProgress 
 } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 import axios from "axios";
@@ -15,6 +16,8 @@ import { placeTypes } from "./PlaceHome";
 
 const PlaceAdd = () => {
     const Backend_url = import.meta.env.VITE_BACKEND_URL;
+  const [loading, setLoading] = useState(false); // Loading state
+
 
   const [placeData, setPlaceData] = useState({
     place_name: "",
@@ -93,10 +96,14 @@ const PlaceAdd = () => {
   };
 
   const handleSubmit = async() => {
+    setLoading(true); // Set loading to true
+
     console.log("Place Data Submitted:", placeData);
     const res = await axios.post(`${Backend_url}/Add_place`, placeData);
     console.log(res)
     if(res.status == 200){
+      setLoading(false); // Set loading to false
+
         setPlaceData({
             place_name: "",
             stateId: "",
@@ -111,6 +118,8 @@ const PlaceAdd = () => {
             google_map_url: "", // Google Map URL
         });
     }
+    setLoading(false); // Set loading to false
+
   };
 
   return (
@@ -221,8 +230,12 @@ const PlaceAdd = () => {
         ))}
       </Box>
 
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}
+      disabled={loading} // Disable button when loading
+      startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+      >
+      {loading ? "Submitting..." : "Submit"}
+        
       </Button>
     </Box>
   );

@@ -8,12 +8,14 @@ import {
   Typography,
   Grid,
   Paper,
+  CircularProgress 
 } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 import axios from "axios";
 
 const ProductAdd = () => {
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
+  const [loading, setLoading] = useState(false); // Loading state
 
   const [productData, setproductData] = useState({
     stateId: "",
@@ -73,19 +75,21 @@ const ProductAdd = () => {
 
   const handleModelChange = (e) => {
     const file = e.target.files[0];
-  
+
     // Check if file exists and its size
     if (file && file.size > 9.9 * 1024 * 1024) {
       alert("The 3D model file size should not exceed 9.9 MB.");
       e.target.value = ""; // Clear the file input
       return; // Stop further processing
     }
-  
+
     // Update state only if the file is valid
     setproductData((prev) => ({ ...prev, product_model: file }));
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // Set loading to true
+
     try {
       const formData = new FormData();
       formData.append("stateId", productData.stateId);
@@ -97,8 +101,9 @@ const ProductAdd = () => {
       if (productData.product_model) {
         formData.append("product_model", productData.product_model);
       }
+      console.log(productData)
 
-      const response = await axios.post(`${Backend_url}/Add_product`, formData, {
+      const response = await axios.post(`${Backend_url}/Add_product`, productData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -111,6 +116,8 @@ const ProductAdd = () => {
       }
     } catch (error) {
       console.error("Error submitting product:", error);
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -252,8 +259,11 @@ const ProductAdd = () => {
             fullWidth
             sx={{ mt: 2 }}
             onClick={handleSubmit}
+            disabled={loading} // Disable button when loading
+        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
           >
-            Submit
+        {loading ? "Submitting..." : "Submit"}
+            
           </Button>
         </Grid>
       </Grid>

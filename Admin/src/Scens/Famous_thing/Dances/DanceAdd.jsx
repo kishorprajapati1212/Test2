@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Button, Box, Typography } from "@mui/material";
+import { TextField, Button, Box, Typography, CircularProgress } from "@mui/material";
 import StateDropdown from "../../../component/StateDropdown";
 import axios from "axios";
 
@@ -16,6 +16,8 @@ const DanceAdd = () => {
     origin_story: "",
   });
 
+  const [loading, setLoading] = useState(false); // Loading state
+
   const handleStateChange = (state) => {
     setDanceData((prev) => ({
       ...prev,
@@ -29,7 +31,6 @@ const DanceAdd = () => {
     setDanceData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle single image upload for dance_image
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -43,7 +44,6 @@ const DanceAdd = () => {
     reader.readAsDataURL(file);
   };
 
-  // Handle cloths array image and details
   const handleClothAdd = () => {
     setDanceData((prev) => ({
       ...prev,
@@ -72,19 +72,26 @@ const DanceAdd = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Dance Data Submitted:", danceData);
-    const res = await axios.post(`${Backend_url}/Add_Dance`, danceData);
-    console.log(res);
-    if (res.status === 200) {
-      setDanceData({
-        stateId: "",
-        state_name: "",
-        dance_name: "",
-        dance_description: "",
-        dance_image: "",
-        cloths: [],
-        origin_story: "",
-      });
+    setLoading(true); // Set loading to true
+    try {
+      console.log("Dance Data Submitted:", danceData);
+      const res = await axios.post(`${Backend_url}/Add_Dance`, danceData);
+      console.log(res);
+      if (res.status === 200) {
+        setDanceData({
+          stateId: "",
+          state_name: "",
+          dance_name: "",
+          dance_description: "",
+          dance_image: "",
+          cloths: [],
+          origin_story: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -189,8 +196,15 @@ const DanceAdd = () => {
       />
 
       {/* Submit Button */}
-      <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-        Submit
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        onClick={handleSubmit}
+        disabled={loading} // Disable button when loading
+        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
+      >
+        {loading ? "Submitting..." : "Submit"}
       </Button>
     </Box>
   );

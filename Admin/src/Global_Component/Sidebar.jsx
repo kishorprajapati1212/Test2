@@ -85,6 +85,9 @@ const Sidebars = () => {
                 <Menu
                     style={{ marginTop: "20px" }} // Add space below the toggle button
                 >
+                    <CategoryHeader title="User" />
+                    <Item title="Artist verification" to="/Artist_verification" selected={selected} setSelected={setSelected} />
+
                     <CategoryHeader title="State" />
                     <Item title="State" to="/state_home" selected={selected} setSelected={setSelected} />
 

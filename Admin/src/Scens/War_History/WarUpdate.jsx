@@ -143,6 +143,13 @@ const WarUpdate = () => {
                     onChange={(e) => setWarHistory({ ...warHistory, end_war: e.target.value })}
                     margin="normal"
                 />
+                <TextField
+                    fullWidth
+                    label="war Losse "
+                    value={warHistory.war_losses || ""}
+                    onChange={(e) => setWarHistory({ ...warHistory, war_losses: e.target.value })}
+                    margin="normal"
+                />
                 <StateDropdown
                     selectedState={{
                         stateId: warHistory.stateId,

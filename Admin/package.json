@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@mui/icons-material": "^6.1.7",
     "@mui/material": "^6.1.7",
     "@stream-io/video-react-sdk": "^1.7.19",
+    "@vitalets/google-translate-api": "^9.2.0",
     "axios": "^1.7.7",
+    "google-translate-api-browser": "^5.0.0",
     "leaflet": "^1.9.4",
     "leaflet-draw": "^1.0.4",
     "mapbox-gl": "^3.8.0",
@@ -23,6 +26,8 @@
     "react-leaflet-draw": "^0.20.4",
     "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "^6.28.0",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {

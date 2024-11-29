@@ -2,6 +2,7 @@ const express = require("express");
 const warhistorymodel = require("../../_Model/History/Warhistory");
 
 const router = express.Router();
+// const translate = require('@vitalets/google-translate-api');
 
 router.post("/addWarHistory", async(req,res) =>{
     try{
@@ -83,5 +84,28 @@ router.post("/update_war_history/:historyId", async(req,res) => {
 })
 
 
+// router.post('/translate', async (req, res) => {
+//     const { text, targetLang } = req.body;
+  
+//     console.log("Received text:", text);
+//     console.log("Target language:", targetLang);
+  
+//     if (!text || !targetLang) {
+//       return res.status(400).json({ error: 'Text and targetLang are required' });
+//     }
+  
+//     try {
+//       const translation = await translate(text, { to: targetLang });
+//       console.log("Translation successful:", translation.text);
+//       res.json({ translatedText: translation.text });
+//     } catch (error) {
+//       console.error("Translation error details:", error);
+//       res.status(500).json({
+//         error: 'Translation failed',
+//         details: error.message || error,
+//       });
+//     }
+//   });
+  
 
 module.exports = router; 

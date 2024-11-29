@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { TextField, Button, Typography, Box, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { TextField, Button, Typography, Box, MenuItem, Select, InputLabel, FormControl,CircularProgress  } from "@mui/material";
 import axios from "axios";
 
 const AddState = () => {
     const Backend_url = import.meta.env.VITE_BACKEND_URL;
+    const [loading, setLoading] = useState(false); // Loading state
 
     const [formData, setFormData] = useState({
         state_name: "",
@@ -39,6 +40,8 @@ const AddState = () => {
     // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true
+
         console.log("Submitted State:", formData);
 
         try {
@@ -64,6 +67,8 @@ const AddState = () => {
             // If there's any error (e.g., network issue or server error)
             console.error("Error:", error);
             alert("An error occurred while adding the state. Please try again.");
+        } finally {
+            setLoading(false); // Set loading to false
         }
     };
 
@@ -109,7 +114,7 @@ const AddState = () => {
                     onChange={handleChange}
                     margin="normal"
                 />
-                
+
                 <FormControl fullWidth margin="normal" required>
                     <InputLabel>Direction</InputLabel>
                     <Select
@@ -142,8 +147,11 @@ const AddState = () => {
                     type="submit"
                     fullWidth
                     style={{ marginTop: "20px" }}
+                    disabled={loading} // Disable button when loading
+        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                 >
-                    Submit
+                    {loading ? "Submitting..." : "Submit"}
+
                 </Button>
             </form>
         </Box>

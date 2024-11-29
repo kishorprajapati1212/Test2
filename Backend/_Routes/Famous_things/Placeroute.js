@@ -45,7 +45,7 @@ router.get("/Delete_place/:HeritageId" , async(req,res) => {
         const place = await Placemodel.findOneAndDelete({HeritageId:req.params.HeritageId});
         res.status(200).json(place);
     }catch(error){
-        res.status[500].json({message:"Internal error", error:error})
+        res.status(500).json({message:"Internal error", error:error})
     }
 })
 
@@ -54,7 +54,7 @@ router.get("/Get_place_by_id/:HeritageId", async(req,res) => {
         const place = await Placemodel.findOne({HeritageId:req.params.HeritageId});
         res.status(200).json(place);
     }catch(error){
-        res.status[500].json({message:"internal error", error:error})
+        res.status(500).json({message:"internal error", error:error})
     }
 })
 

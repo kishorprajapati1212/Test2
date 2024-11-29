@@ -31,7 +31,7 @@ const ProductHome = () => {
 
   const handleDelete = async () => {
     if (selectedProduct) {
-      const res = await axios.delete(`${Backend_url}/Delete_product/${selectedProduct.productId}`);
+      const res = await axios.get(`${Backend_url}/Delete_product/${selectedProduct.productId}`);
       if (res.status === 200) {
         setPopupOpen(false);
         setProducts((prev) =>
@@ -68,6 +68,7 @@ const ProductHome = () => {
                 <TableCell>Product Name</TableCell>
                 <TableCell>Category</TableCell>
                 <TableCell>State</TableCell>
+                <TableCell>product_images</TableCell>
                 <TableCell>Model</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
@@ -79,21 +80,64 @@ const ProductHome = () => {
                   <TableCell>{product.product_category}</TableCell>
                   <TableCell>{product.State_name}</TableCell>
                   <TableCell>
+                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                      {product.product_images && product.product_images.length > 0 ? (
+                        product.product_images.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Product ${index + 1}`}
+                            style={{
+                              width: "50px",
+                              height: "50px",
+                              objectFit: "cover",
+                              borderRadius: "5px",
+                              border: "1px solid #ccc",
+                            }}
+                          />
+                        ))
+                      ) : (
+                        <Typography variant="body2">No product_images</Typography>
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
                     <a href={product.product_url} target="_blank" rel="noopener noreferrer">
                       {product.product_model ? "View Model" : "No Model"}
                     </a>
                   </TableCell>
                   <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => {
-                        setSelectedProduct(product);
-                        setPopupOpen(true);
-                      }}
-                    >
-                      Delete
-                    </Button>
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      {/* Update Button */}
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "green",
+                          color: "white",
+                          padding: "5px 10px",
+                        }}
+                        component={Link}
+                        to={`/Update_product/${product.productId}`}
+                      >
+                        Update
+                      </Button>
+
+                      {/* Delete Button */}
+                      <Button
+                        variant="contained"
+                        style={{
+                          backgroundColor: "red",
+                          color: "white",
+                          padding: "5px 10px",
+                        }}
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setPopupOpen(true);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

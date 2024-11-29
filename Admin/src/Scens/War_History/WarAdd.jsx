@@ -4,6 +4,7 @@ import {
   TextField,
   Button,
   Box,
+  CircularProgress
 } from "@mui/material";
 import StateDropdown from "../../component/StateDropdown";
 import axios from "axios";
@@ -69,7 +70,7 @@ const WarAdd = () => {
     try {
       console.log("Form Data:", formData);
 
-    //   Uncomment this when the backend endpoint is ready
+      //   Uncomment this when the backend endpoint is ready
       const response = await axios.post(`${Backend_url}/addWarHistory`, formData);
       console.log("Response:", response.data);
 
@@ -205,6 +206,7 @@ const WarAdd = () => {
             variant="contained"
             color="primary"
             disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
           >
             {loading ? "Submitting..." : "Add War History"}
           </Button>

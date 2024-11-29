@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
@@ -9,23 +8,26 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["Admin", "Artist", "Regular"], required: true },
+    role: { type: String, enum: ["Admin", "Artist", "RegularUser"], required: true },
     createdAt: { type: Date, default: Date.now },
 
     adminData: {
-        accessLevel: { type: String, enum: ["superadmin", "moderator"], default: "moderator" },
+        // accessLevel: { type: String, enum: ["superadmin", "moderator"], default: "moderator" },
     },
 
     artistData: {
-        bio: { type: String },
-        portfolioLink: { type: String },
+        address: String,
+        city: String,
+        state: String,
+        homeAddress: String,
+        contact: Number,
+        profile_image: String,
         socialMediaHandles: [{ platform: String, link: String }], // Array of social links
         verified: { type: Boolean, default: false },
     },
 
     regularData: {
-        preferences: { type: [String], default: [] }, // Array of user preferences
-        subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "Subscription" }],
+        
     },
 });
 

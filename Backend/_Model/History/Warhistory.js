@@ -13,7 +13,7 @@ const warhistorySchema = new mongooes.Schema({
     war_place: String,
     war_between: String,
     war_winner: String,
-    War_losses: String,
+    war_losses: String,
     war_reason: String,
     war_description: String,
     war_image: String,

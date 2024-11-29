@@ -32,6 +32,8 @@ import DanceUpdate from './Scens/Famous_thing/Dances/DanceUpdate';
 import ProductHome from './Scens/Famous_thing/Product/ProductHome';
 import ProductAdd from './Scens/Famous_thing/Product/ProductAdd';
 import ProductUpdate from './Scens/Famous_thing/Product/ProductUpdate';
+import Artist_verification from './Scens/User_Verification/Artist_verification_Home';
+import Update_Artist from './Scens/User_Verification/Update_Artist';
 
 const Approutes = () => {
 
@@ -40,7 +42,11 @@ const Approutes = () => {
             <Routes>
                 {/* <Route  path='/' element={<StateHome /> } /> */}
                 {/* <Route  path='/' element={<Homepageofadmin /> } /> */}
-                <Route path='/' element={<MapExtract />} />
+                {/* <Route path='/' element={<MapExtract />} /> */}
+                <Route path='/' element={<StateHome />} />
+
+                <Route path='/Artist_verification' element={<Artist_verification />} />
+                <Route path='/update_artist/:userId' element={<Update_Artist />} />
 
                 {/* -------------------------- State ------------------------- */}
                 <Route path='/state_home' element={<StateHome />} />
@@ -83,7 +89,7 @@ const Approutes = () => {
 
                 <Route path='/product_home' element={<ProductHome />} />
                 <Route path='/Add_product' element={<ProductAdd />} />
-                <Route path='/Update_product/:foodId' element={<ProductUpdate />} />
+                <Route path='/Update_product/:productId=]=' element={<ProductUpdate />} />
 
                 {/* -------------------------- Map ------------------------- */}
 
