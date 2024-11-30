@@ -13,8 +13,10 @@ const Productroute = require("./_Routes/Famous_things/Productroute")
 const Festiveroute = require("./_Routes/Famous_things/Festivalroute")
 const userroute = require("./_Routes/Users/Userroute")
 const Danceroute = require("./_Routes/Famous_things/Danceroute")
-const state_slider = require("./_UserRoutes/State/State_slider")
+const Shortlikeroute = require("./_Routes/LikeAndComments/Shorts/Shortlikeroute")
+const Shortcommentroute = require("./_Routes/LikeAndComments/Shorts/Shortcommentroute")
 
+const state_slider = require("./_UserRoutes/State/State_slider")
 
 const app = express();
 const httpServer = createServer(app); // Create an HTTP server
@@ -38,6 +40,8 @@ app.use(Foodroute)
 app.use(Festiveroute)
 app.use(Productroute)
 app.use(Danceroute)
+app.use(Shortlikeroute)
+app.use(Shortcommentroute)
 app.use(state_slider)
 app.use(userroute)
 

@@ -67,5 +67,13 @@ router.get("/Get_only_Limited_Place", async (req, res) => {
     }
 });
 
+router.get("/Get_place_by_state_name", async(req,res) =>{
+    try{
+        const place = await Placemodel.find({state_name:req.query.selectedState});
+        res.status(200).json(place);
+    }catch(error){
+        res.status(500).json({message:"internal error", error:error})
+    }
+})
 
 module.exports = router;
