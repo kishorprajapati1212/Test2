@@ -32,27 +32,32 @@ const WarHistoryDetail = ({ data }) => {
     setShowSummary((prev) => !prev);
   };
 
+  // Function to replace '//' with line breaks
+  const formatDescription = (description) => {
+    return description.split("//").map((line, index) => (
+      <span key={index}>
+        {line}
+        {index !== description.split("//").length - 1 && <br />}
+      </span>
+    ));
+  };
+
   return (
     <Box sx={{ padding: "20px", backgroundColor: "#f9f9f9" }}>
       <Grid container spacing={3}>
         {/* Left section with the war images */}
         <Grid item xs={12} md={5}>
           {/* Display multiple images using carousel */}
-          
-            <Carousel>
-              
-                <div >
-                  <CardMedia
-                    component="img"
-                    height="300"
-                    image={war_image}
-                    // alt={`${war_name} image ${index + 1}`}
-                    sx={{ borderRadius: "8px", boxShadow: 3 }}
-                  />
-                </div>
-              
-            </Carousel>
-          
+          <Carousel>
+            <div>
+              <CardMedia
+                component="img"
+                height="300"
+                image={war_image}
+                sx={{ borderRadius: "8px", boxShadow: 3 }}
+              />
+            </div>
+          </Carousel>
         </Grid>
 
         {/* Right section with war details */}
@@ -104,21 +109,36 @@ const WarHistoryDetail = ({ data }) => {
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
                   Detailed Information
                 </Typography>
-                <Typography variant="body1" paragraph>
-                  <strong>War Between:</strong> {war_between}
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  <strong>Winner:</strong> {war_winner}
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  <strong>Reason:</strong> {war_reason}
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  <strong>Losses:</strong> {war_losses}
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  <strong>Description:</strong> {war_description}
-                </Typography>
+
+                {war_between && (
+                  <Typography variant="body1" paragraph>
+                    <strong>War Between:</strong> {formatDescription(war_between)}
+                  </Typography>
+                )}
+
+                {war_winner && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Winner:</strong> {war_winner}
+                  </Typography>
+                )}
+
+                {war_reason && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Reason:</strong> {war_reason}
+                  </Typography>
+                )}
+
+                {war_losses && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Losses:</strong> {war_losses}
+                  </Typography>
+                )}
+
+                {war_description && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Description:</strong> {formatDescription(war_description)}
+                  </Typography>
+                )}
               </Box>
             )}
           </Paper>

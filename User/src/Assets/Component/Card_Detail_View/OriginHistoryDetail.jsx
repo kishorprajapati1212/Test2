@@ -13,11 +13,21 @@ const OriginDetail = ({ data }) => {
     today_Status,
   } = data;
 
-  // State to toggle between summary and detailed views
   const [showSummary, setShowSummary] = useState(true);
 
   const toggleView = () => {
     setShowSummary((prev) => !prev);
+  };
+
+  // Format the description by breaking down sections
+  const formatDescription = (description) => {
+    return description
+      .split("\n")
+      .map((line, index) => (
+        <Typography variant="body1" paragraph key={index}>
+          {line}
+        </Typography>
+      ));
   };
 
   return (
@@ -65,7 +75,7 @@ const OriginDetail = ({ data }) => {
               <strong>Origin Year:</strong> {origin_time}
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: "20px" }}>
-              <strong>Today's Status:</strong> {today_Status}
+              <strong>Today's Status:</strong> {today_Status || "N/A"}
             </Typography>
 
             {/* Toggle Button */}
@@ -93,9 +103,7 @@ const OriginDetail = ({ data }) => {
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
                   Detailed Description
                 </Typography>
-                <Typography variant="body1" paragraph>
-                  {origin_description}
-                </Typography>
+                {formatDescription(origin_description)}
               </Box>
             )}
           </Paper>

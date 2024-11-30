@@ -6,11 +6,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styl
 const FestivalDetail = ({ data }) => {
   const {
     festival_name,
-    festival_image,
+    Festival_image,
     location,
-    date,
+    festival_startDate,
+    festival_endDate,
     significance,
-    description,
+    celebrationMethods,
+    celebrationReason,
+    festivalSignificance,
+    originLocation,
   } = data;
 
   const [showSummary, setShowSummary] = useState(true);
@@ -20,13 +24,22 @@ const FestivalDetail = ({ data }) => {
   };
 
   return (
-    <Box sx={{ padding: "20px", backgroundColor: "#f9f9f9" }}>
+    <Box sx={{ padding: "20px", backgroundColor: "#f4f4f4" }}>
       <Grid container spacing={3}>
         {/* Left section with the festival images */}
         <Grid item xs={12} md={5}>
-          {festival_image && festival_image.length > 0 && (
-            <Carousel>
-              {festival_image.map((image, index) => (
+          {Festival_image && Festival_image.length > 0 && (
+            <Carousel
+            autoPlay={true} // Enable auto slide
+            interval={5000} // Time between slides in ms (5 seconds here)
+            infiniteLoop={true} // Loop the carousel infinitely
+            showArrows={false} // Optionally hide navigation arrows
+            showThumbs={false} // Optionally hide thumbnails
+            swipeable={true} // Allow swiping if on mobile devices
+            transitionTime={1000} // Time for transition between slides (1 second here)
+            dynamicHeight={true} // Adjusts the height of carousel dynamically to the images
+            >
+              {Festival_image.map((image, index) => (
                 <div key={index}>
                   <CardMedia
                     component="img"
@@ -49,9 +62,10 @@ const FestivalDetail = ({ data }) => {
               backgroundColor: "#ffffff",
               borderRadius: "8px",
               boxShadow: 3,
+              minHeight: "400px",
             }}
           >
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#1976d2" }}>
               {festival_name}
             </Typography>
 
@@ -69,21 +83,32 @@ const FestivalDetail = ({ data }) => {
             {showSummary ? (
               <Box>
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                  Summary
+                  Festival Overview
                 </Typography>
                 {location && (
                   <Typography variant="body1" paragraph>
                     <strong>Location:</strong> {location}
                   </Typography>
                 )}
-                {date && (
+                {festival_startDate && festival_endDate && (
                   <Typography variant="body1" paragraph>
-                    <strong>Date:</strong> {date}
+                    <strong>Date:</strong> {new Date(festival_startDate).toLocaleDateString()} -{" "}
+                    {new Date(festival_endDate).toLocaleDateString()}
                   </Typography>
                 )}
                 {significance && (
                   <Typography variant="body1" paragraph>
                     <strong>Significance:</strong> {significance}
+                  </Typography>
+                )}
+                {celebrationReason && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Reason for Celebration:</strong> {celebrationReason}
+                  </Typography>
+                )}
+                {originLocation && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Origin Location:</strong> {originLocation}
                   </Typography>
                 )}
               </Box>
@@ -92,9 +117,14 @@ const FestivalDetail = ({ data }) => {
                 <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
                   Detailed Information
                 </Typography>
-                {description && (
+                {celebrationMethods && (
                   <Typography variant="body1" paragraph>
-                    <strong>Description:</strong> {description}
+                    <strong>Celebration Methods:</strong> <br /> {celebrationMethods.split("\no\t").join("\n")}
+                  </Typography>
+                )}
+                {festivalSignificance && (
+                  <Typography variant="body1" paragraph>
+                    <strong>Festival Significance:</strong> {festivalSignificance}
                   </Typography>
                 )}
               </Box>

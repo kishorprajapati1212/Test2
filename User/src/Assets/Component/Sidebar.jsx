@@ -18,7 +18,7 @@ const Sidebar = ({ open, toggleSidebar }) => {
     >
       <IconButton 
         onClick={toggleSidebar(false)} 
-        sx={{ position: 'absolute', top: '10px', right: '10px', color: Theme.white[100] }}
+        sx={{ position: 'right', top: '10px', right: '10px', color: Theme.white[100] }}
       >
         <CloseIcon />
       </IconButton>

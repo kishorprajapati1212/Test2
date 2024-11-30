@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, CardMedia, Grid, Container } from "@mui/material";
+import { Box, Typography, Card, CardMedia, Container } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,7 +7,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const State_Slide = () => {
-  const Backend_url = import.meta.env.VITE_BACKEND_URL;  // Ensure the env variable is defined in .env
+  const Backend_url = import.meta.env.VITE_BACKEND_URL; // Ensure the .env file is set up
   const stateId = useParams().stateId;
   const [sliderData, setSliderData] = useState([]);
 
@@ -15,9 +15,7 @@ const State_Slide = () => {
   const fetchData = async () => {
     try {
       const res = await axios.get(`${Backend_url}/State_Home_Slider_Content/${stateId}`);
-      // Assuming res.data is an array of objects with food details
-      setSliderData(res.data.food); 
-      console.log(sliderData)
+      setSliderData(res.data.food || []); // Default to an empty array if no data
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -34,51 +32,107 @@ const State_Slide = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true, // Show navigation arrows
-    adaptiveHeight: true, // Adjust slider height dynamically
+    autoplaySpeed: 4000,
+    arrows: false,
+    adaptiveHeight: true,
+    pauseOnHover: true,
   };
 
   return (
-    <Box>
-      {/* Slider Section */}
-      <Container sx={{ marginTop: 4 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Explore Himachal Pradesh
+    <Box
+      sx={{
+        py: 6,
+        background: "#f9fafc", // Subtle background to blend well
+      }}
+    >
+      <Container maxWidth="md">
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{
+            fontWeight: 700,
+            mb: 4,
+            color: "#222", // Neutral dark text
+            textTransform: "capitalize",
+            fontSize: { xs: "1.8rem", md: "2.2rem" },
+          }}
+        >
+          Explore The State
         </Typography>
         <Slider {...sliderSettings}>
           {sliderData.length > 0 ? (
             sliderData.map((item, index) => (
-              <Box key={index} sx={{ padding: 4 }}>
-                <Grid container spacing={4} alignItems="center">
+              <Box key={index} sx={{ px: 2 }}>
+                <Card
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: "stretch",
+                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)", // Light shadow for modern look
+                    borderRadius: 4,
+                    overflow: "hidden",
+                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                    "&:hover": {
+                      transform: "translateY(-3px)",
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    },
+                    background: "#fff", // Maintain neutral white background
+                  }}
+                >
                   {/* Image Section */}
-                  <Grid item xs={12} md={6}>
-                    <CardMedia
-                      component="img"
-                      image={item.food_image && item.food_image.length > 0 ? item.food_image[0] : 'default-image-url'} // Fallback image if empty
-                      alt={item.food_name}
+                  <CardMedia
+                    component="img"
+                    image={item.food_image?.[0] || "default-image-url"}
+                    alt={item.food_name}
+                    sx={{
+                      width: { xs: "100%", sm: "40%" },
+                      height: "auto",
+                      objectFit: "cover",
+                    }}
+                  />
+                  {/* Text Content Section */}
+                  <Box
+                    sx={{
+                      p: 3,
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      textAlign: { xs: "center", sm: "left" },
+                    }}
+                  >
+                    <Typography
+                      variant="h5"
                       sx={{
-                        width: "100%",
-                        height: { xs: "250px", md: "400px" }, // Responsive image height
-                        objectFit: "cover",
-                        borderRadius: 2,
+                        fontWeight: 600,
+                        mb: 1,
+                        color: "#333", // Neutral dark text color
+                        fontSize: "1.4rem",
+                        textTransform: "capitalize",
+                        textAlign:"center"
                       }}
-                    />
-                  </Grid>
-                  {/* Information Section */}
-                  <Grid item xs={12} md={6}>
-                    <Typography variant="h5" gutterBottom>
+                    >
                       {item.food_name}
                     </Typography>
-                    <Typography variant="body1" paragraph>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: "#555", // Subtle gray text
+                        fontSize: "1rem",
+                        lineHeight: 1.6,
+                      }}
+                    >
                       {item.origi_story || "No origin story available."}
                     </Typography>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Card>
               </Box>
             ))
           ) : (
-            <Typography variant="h6" align="center">Loading...</Typography>
+            <Typography variant="h6" align="center" sx={{ color: "#555" }}>
+              Loading...
+            </Typography>
           )}
         </Slider>
       </Container>

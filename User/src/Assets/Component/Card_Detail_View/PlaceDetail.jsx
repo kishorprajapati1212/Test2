@@ -110,14 +110,6 @@ const PlaceDetail = ({ data }) => {
                     <strong>Description:</strong> {description}
                   </Typography>
                 )}
-                {google_map_url && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Google Map:</strong>{" "}
-                    <a href={google_map_url} target="_blank" rel="noopener noreferrer">
-                      View Location
-                    </a>
-                  </Typography>
-                )}
               </Box>
             )}
           </Paper>

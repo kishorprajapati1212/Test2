@@ -8,12 +8,13 @@ import PlaceDetail from "../Component/Card_Detail_View/PlaceDetail";
 import ProductDetail from "../Component/Card_Detail_View/ProductDetail";
 import WarHistoryDetail from "../Component/Card_Detail_View/WarHistoryDetail ";
 import OriginHistoryDetail from "../Component/Card_Detail_View/OriginHistoryDetail";
+import DanceDetail from "../Component/Card_Detail_View/DanceDetail";
+import BackButton from "../Component/BackButton";
 
 
 const Carddetail = () => {
     const Backend_url = import.meta.env.VITE_BACKEND_URL;
     const { stateId, section, itemId } = useParams();
-    const navigate = useNavigate(); // Hook to handle navigation
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -71,6 +72,8 @@ const Carddetail = () => {
                 return <WarHistoryDetail data={data} />;
             case "origin_history":
                 return <OriginHistoryDetail data={data} />;
+            case "dance":
+                return <DanceDetail data={data} />;
             //   case "war_history":
             //     return <WarHistoryDetail data={data} />;
             //   // Add other sections as needed
@@ -81,9 +84,8 @@ const Carddetail = () => {
 
     return (
         <div style={{ padding: "20px" }}>
-            <Button variant="outlined" onClick={() => navigate(-1)} style={{ marginBottom: "20px" }}>
-                Back
-            </Button>
+                  <BackButton />
+
 
             <Card>
                 <CardContent>

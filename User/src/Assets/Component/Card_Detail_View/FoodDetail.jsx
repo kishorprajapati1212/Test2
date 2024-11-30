@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Typography, Paper, Box, Divider, CardMedia, Button } from "@mui/material";
+import { Grid, Typography, Paper, Box, Divider, CardMedia, Button, Chip } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styles
 
@@ -14,7 +14,6 @@ const FoodDetail = ({ data }) => {
     origi_story,
   } = data;
 
-  // State to manage which section (Summary or Detail) is visible
   const [showSummary, setShowSummary] = useState(true);
 
   const toggleView = () => {
@@ -22,21 +21,33 @@ const FoodDetail = ({ data }) => {
   };
 
   return (
-    <Box sx={{ padding: "20px", backgroundColor: "#f9f9f9" }}>
-      <Grid container spacing={3}>
+    <Box sx={{ padding: "40px", backgroundColor: "#f8f8f8", minHeight: "100vh" }}>
+      <Grid container spacing={4}>
         {/* Left section with the food images */}
         <Grid item xs={12} md={5}>
           {/* Display multiple images using carousel */}
           {food_image && food_image.length > 0 && (
-            <Carousel>
+            <Carousel
+              autoPlay={true}
+              interval={4000}
+              infiniteLoop={true}
+              showArrows={false}
+              showThumbs={false}
+              swipeable={true}
+              dynamicHeight={true}
+            >
               {food_image.map((image, index) => (
                 <div key={index}>
                   <CardMedia
                     component="img"
-                    height="300"
+                    height="350"
                     image={image}
                     alt={`${food_name} image ${index + 1}`}
-                    sx={{ borderRadius: "8px", boxShadow: 3 }}
+                    sx={{
+                      borderRadius: "12px",
+                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               ))}
@@ -48,13 +59,14 @@ const FoodDetail = ({ data }) => {
         <Grid item xs={12} md={7}>
           <Paper
             sx={{
-              padding: "20px",
+              padding: "30px",
               backgroundColor: "#ffffff",
-              borderRadius: "8px",
-              boxShadow: 3,
+              borderRadius: "12px",
+              boxShadow: "0 6px 18px rgba(0, 0, 0, 0.1)",
+              minHeight: "450px",
             }}
           >
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold" }}>
+            <Typography variant="h3" gutterBottom sx={{ fontWeight: "600", color: "#2c3e50" }}>
               {food_name}
             </Typography>
 
@@ -74,37 +86,61 @@ const FoodDetail = ({ data }) => {
             {showSummary ? (
               <Box>
                 {/* Summary Section */}
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+                <Typography variant="h6" sx={{ fontWeight: "600", marginBottom: "10px", color: "#333" }}>
                   Summary
                 </Typography>
                 {famous_for && (
-                  <Typography variant="body1" paragraph>
+                  <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
                     <strong>Famous For:</strong> {famous_for}
                   </Typography>
                 )}
 
                 {famous_location && (
-                  <Typography variant="body1" paragraph>
+                  <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
                     <strong>Famous Location:</strong> {famous_location}
                   </Typography>
                 )}
+                <Chip
+                  label="Himachal Pradesh"
+                  sx={{
+                    marginTop: "10px",
+                    backgroundColor: "#1976d2",
+                    color: "#ffffff",
+                    borderRadius: "20px",
+                    fontWeight: "600",
+                  }}
+                />
               </Box>
             ) : (
               <Box>
                 {/* Detail Section */}
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
+                <Typography variant="h6" sx={{ fontWeight: "600", marginBottom: "10px", color: "#333" }}>
                   Detailed Information
                 </Typography>
                 {recipes && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Recipes:</strong> {recipes}
-                  </Typography>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
+                      Ingredients:
+                    </Typography>
+                    <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
+                      {recipes.split("\no\t").map((recipe, index) => (
+                        <Typography key={index} variant="body2" paragraph sx={{ fontSize: "1rem" }}>
+                          - {recipe}
+                        </Typography>
+                      ))}
+                    </Typography>
+                  </Box>
                 )}
 
                 {origi_story && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Origin Story:</strong> {origi_story}
-                  </Typography>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
+                      Origin Story:
+                    </Typography>
+                    <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
+                      {origi_story}
+                    </Typography>
+                  </Box>
                 )}
               </Box>
             )}

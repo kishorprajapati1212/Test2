@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import "./css/SemiStateCard.css"; // Import the CSS for styling
+import { Box, Typography, Card, CardContent, CardMedia } from "@mui/material";
+import "./css/SemiStateCard.css"; // Import your custom styles
+import BackButton from "../Component/BackButton";
 
 const Semi_State_Detail_Card = () => {
   const { stateId, section } = useParams();
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
-  const navigate = useNavigate(); // useNavigate hook to navigate programmatically
 
   const [sectionData, setSectionData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -45,72 +46,103 @@ const Semi_State_Detail_Card = () => {
   const renderCard = (item, index) => {
     const descriptionClass = section === 'food' || section === 'festival' || section === 'place' ? 'card-description-left' : 'card-description-right';
 
-    const itemId = item._id;  // Assuming the item has a unique ID field `_id`
-    const detailRoute = `/details/${stateId}/${section}/${itemId}`; // Update the URL pattern as needed
+    const itemId = item._id;
+    const detailRoute = `/details/${stateId}/${section}/${itemId}`;
 
     return (
-      <Link to={detailRoute} key={index} className="card-link">
-        <div className="card">
-          <div className="card-content">
-            {section === "food" && (
-              <img src={item.food_image[0]} alt={item.food_name} className="card-image" />
-            )}
-            {section === "festival" && (
-              <img src={item.festival_image} alt={item.festival_name} className="card-image" />
-            )}
-            {section === "place" && (
-              <img src={item.place_image} alt={item.place_name} className="card-image" />
-            )}
-            {section === "war_history" && (
-              <img
-                src={item.war_image && item.war_image} // Display the first war image
-                alt={item.war_name}
-                className="card-image"
+      <Link to={detailRoute} key={index} className="card-link" style={{ textDecoration: "none" }}>
+        <Card className="flip-card" sx={{
+          width: 345, 
+          height: 460, 
+          boxShadow: 3, 
+          borderRadius: 2, 
+          overflow: 'hidden', 
+          transition: 'transform 0.3s ease', 
+          "&:hover": { transform: "scale(1.05)" }, 
+          marginBottom: 2 
+        }}>
+          {/* Flip Card Inner to apply 3D flip */}
+          <div className="flip-card-inner">
+            {/* Front side: Image and Name */}
+            <div className="flip-card-front">
+              <CardMedia
+                component="img"
+                height="200"
+                image={section === "food" ? item.food_image[0]
+                  : section === "festival" ? item.Festival_image[0]
+                    : section === "place" ? item.place_image[0]
+                      : section === "war_history" ? item.war_image
+                        : section === "origin_history" ? item.origin_image[0]
+                          : section === "product" ? item.product_images[0]
+                            : section === "dance" ? item.dance_image[0]
+                              : ""}
+                alt={item.food_name || item.festival_name || item.place_name || item.war_name || item.origin_name || item.product_name || item.dance_name}
+                sx={{ objectFit: "cover" }}
               />
-            )}
-            {section === "origin_history" && (
-              <img
-                src={item.origin_image && item.origin_image[0]} // Display the first origin image
-                alt={item.origin_state_name}
-                className="card-image"
-              />
-            )}
-            {section === "product" && (
-              <img src={item.product_image} alt={item.product_name} className="card-image" />
-            )}
-            <div className="card-text">
-              <h3 className="card-title">
-                {section === "food" && item.food_name}
-                {section === "festival" && item.festival_name}
-                {section === "place" && item.place_name}
-                {section === "war_history" && item.event_name}
-                {section === "origin_history" && item.origin_name}
-                {section === "product" && item.product_name}
-              </h3>
-              <p className={`card-description ${descriptionClass}`}>
-                {section === "food" && item.food_description}
-                {section === "festival" && item.festival_description}
-                {section === "place" && item.place_description}
-                {section === "war_history" && item.event_description}
-                {section === "origin_history" && item.origin_description}
-                {section === "product" && item.product_description}
-              </p>
+              <CardContent sx={{
+                display: "flex", 
+                flexDirection: "column", 
+                justifyContent: "flex-end", 
+                paddingBottom: 2 
+              }}>
+                <Typography variant="h6" sx={{
+                  fontWeight: "bold", 
+                  textAlign: "center", 
+                  fontSize: "1.1rem", 
+                  color: "#333" 
+                }}>
+                  {section === "food" && item.food_name}
+                  {section === "festival" && item.festival_name}
+                  {section === "place" && item.place_name}
+                  {section === "war_history" && item.war_name.slice(0,15)}
+                  {section === "origin_history" && item.origin_name}
+                  {section === "product" && item.product_name}
+                  {section === "dance" && item.dance_name}
+                </Typography>
+              </CardContent>
+            </div>
+
+            {/* Back side: Description */}
+            <div className="flip-card-back">
+              <CardContent sx={{ color: "white", padding: 2, textAlign: "center" }}>
+                <Typography variant="body2" sx={{ fontSize: "1rem" }}>
+                  {section === "food" && item.origi_story.slice(0,100)}
+                  {section === "festival" && item.festivalSignificance.slice(0,100)}
+                  {section === "place" && item.Period.slice(0,100)}
+                  {section === "war_history" && item.war_description.slice(0,100)}
+                  {section === "origin_history" && item.origin_description.slice(0, 250)}
+                  {section === "product" && item.product_description.slice(0,100)}
+                  {section === "product" && item.dance_description.slice(0,100)}
+                </Typography>
+              </CardContent>
             </div>
           </div>
-        </div>
+        </Card>
       </Link>
     );
   };
 
   return (
     <div>
-      <button onClick={() => navigate(-1)} className="back-button" style={{ marginBottom: "20px" }}>
-        Back
-      </button>
-      <h1 align="center">{`${section.charAt(0).toUpperCase() + section.slice(1)}`}</h1>
-      <div className="card-container">
+      <BackButton />
+      <h1 align="center" style={{
+        marginBottom: "20px", 
+        fontSize: "2rem", 
+        fontWeight: "600", 
+        color: "#333"
+      }}>
+        {`${section.charAt(0).toUpperCase() + section.slice(1)}`}
+      </h1>
+
+      {/* Grid Layout */}
+      <Box sx={{
+        display: "grid", 
+        gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", 
+        gap: 3, 
+        padding: 2 
+      }}>
         {sectionData.map((item, index) => renderCard(item, index))}
-      </div>
+      </Box>
     </div>
   );
 };
