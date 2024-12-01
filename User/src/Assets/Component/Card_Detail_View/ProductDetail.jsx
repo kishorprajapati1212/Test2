@@ -156,7 +156,7 @@ const ProductModel = ({ url }) => {
   const fbx = useFBX(url); // Load the FBX model
 
   return fbx ? (
-    <primitive object={fbx} scale={0.5} position={[0, 0, 0]} />
+    <primitive object={fbx} scale={0.02} position={[0, 0, 0]} />
   ) : (
     <div>Loading 3D model...</div>
   );

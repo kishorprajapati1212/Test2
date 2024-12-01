@@ -1,0 +1,71 @@
+/* Container Styles */
+.shorts-container {
+  padding: 20px;
+  text-align: center;
+  transition: filter 0.3s ease-in-out;
+}
+
+/* Title Styles */
+.shorts-container h1 {
+  font-family: var(--Font);
+  font-size: 40px;
+  font-weight: bolder;
+  margin-bottom: 20px;
+}
+
+/* Blur effect for non-active videos */
+.blur-background .shorts-item {
+  filter: blur(10px);
+  pointer-events: none;
+  transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Active video scaling effect */
+.blur-background .shorts-item.active-video {
+  filter: none;
+  pointer-events: all;
+  transform: scale(1.2); /* Adjust this value to scale it less aggressively */
+  z-index: 10; /* Ensure it appears on top */
+  transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+/* Layout styles */
+.shorts-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  position: relative;
+}
+
+.shorts-item {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 200px; /* Default size */
+  height: 400px; /* Default size */
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer; /* Add pointer cursor for hover */
+}
+
+/* Slight scale effect on hover for all video items */
+.shorts-item:hover {
+  transform: scale(1.05); /* A smaller scale effect */
+}
+
+/* Video title styles */
+.video-title {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin: 0;
+  background-color: #f0f0f0;
+}
+
+
+/* Hover Effect to Play Video */
+/* .shorts-item:hover {
+  transform: scale(1.05); 
+} */

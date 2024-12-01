@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Card, CardMedia, Container } from "@mui/material";
+import { Box, Typography, Container } from "@mui/material";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,14 +7,16 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const State_Slide = () => {
-  const Backend_url = import.meta.env.VITE_BACKEND_URL; // Ensure the .env file is set up
+  const Backend_url = import.meta.env.VITE_BACKEND_URL;
   const stateId = useParams().stateId;
   const [sliderData, setSliderData] = useState([]);
+  const [stateName, setStateName] = useState("");
 
   // Fetch data from the backend
   const fetchData = async () => {
     try {
       const res = await axios.get(`${Backend_url}/State_Home_Slider_Content/${stateId}`);
+      setStateName(res.data.state_name.state_name);
       setSliderData(res.data.food || []); // Default to an empty array if no data
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -45,72 +47,79 @@ const State_Slide = () => {
         background: "#f9fafc", // Subtle background to blend well
       }}
     >
-      <Container maxWidth="md">
-        <Typography
-          variant="h4"
-          align="center"
-          gutterBottom
-          sx={{
-            fontWeight: 700,
-            mb: 4,
-            color: "#222", // Neutral dark text
-            textTransform: "capitalize",
-            fontSize: { xs: "1.8rem", md: "2.2rem" },
-          }}
-        >
-          Explore The State
-        </Typography>
+      {/* <Container maxWidth="md"> */}
+      <Typography
+        variant="h4"
+        align="center"
+        gutterBottom
+        sx={{
+          fontWeight: 700,
+          mb: 4,
+          color: "#222",
+          textTransform: "capitalize",
+          fontSize: { xs: "1.8rem", md: "2.2rem" },
+        }}
+      >
+        {stateName && `Explore The ${stateName}`}
+      </Typography>
+      <Box>
         <Slider {...sliderSettings}>
           {sliderData.length > 0 ? (
             sliderData.map((item, index) => (
-              <Box key={index} sx={{ px: 2 }}>
-                <Card
+              <Box key={index} sx={{ position: "relative", width: "100%" }}>
+                {/* Image Section */}
+                <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    alignItems: "stretch",
-                    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)", // Light shadow for modern look
-                    borderRadius: 4,
+                    position: "relative",
+                    width: "100%",
+                    height: "400px", // Fixed height for images
                     overflow: "hidden",
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                    "&:hover": {
-                      transform: "translateY(-3px)",
-                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
+                    cursor: "pointer", // Indicating it's clickable
+                    "&:hover .description-overlay": {
+                      opacity: 1,
+                      transform: "translateY(0)",
                     },
-                    background: "#fff", // Maintain neutral white background
                   }}
                 >
-                  {/* Image Section */}
-                  <CardMedia
-                    component="img"
-                    image={item.food_image?.[0] || "default-image-url"}
+                  <img
+                    src={item.food_image?.[0] || "default-image-url"}
                     alt={item.food_name}
-                    sx={{
-                      width: { xs: "100%", sm: "40%" },
-                      height: "auto",
-                      objectFit: "cover",
+                    style={{
+                      width: "100%", // Make the image fill 100% width
+                      height: "100%", // Full height
+                      objectFit: "cover", // Ensure image covers the container
+                      transition: "transform 0.3s ease",
                     }}
                   />
-                  {/* Text Content Section */}
+                  {/* Description Overlay */}
                   <Box
                     sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
                       p: 3,
-                      flex: 1,
+                      background: "rgba(0, 0, 0, 0.6)",
+                      color: "#fff",
+                      opacity: 0,
+                      backdropFilter: "blur(8px)", // Add blur effect
+                      transform: "translateY(100%)", // Hidden by default
+                      transition: "opacity 0.3s ease, transform 0.3s ease",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "center",
-                      textAlign: { xs: "center", sm: "left" },
+                      alignItems: "center",
+                      textAlign: "center",
                     }}
+                    className="description-overlay"
                   >
                     <Typography
                       variant="h5"
                       sx={{
                         fontWeight: 600,
                         mb: 1,
-                        color: "#333", // Neutral dark text color
                         fontSize: "1.4rem",
                         textTransform: "capitalize",
-                        textAlign:"center"
                       }}
                     >
                       {item.food_name}
@@ -118,7 +127,6 @@ const State_Slide = () => {
                     <Typography
                       variant="body1"
                       sx={{
-                        color: "#555", // Subtle gray text
                         fontSize: "1rem",
                         lineHeight: 1.6,
                       }}
@@ -126,7 +134,7 @@ const State_Slide = () => {
                       {item.origi_story || "No origin story available."}
                     </Typography>
                   </Box>
-                </Card>
+                </Box>
               </Box>
             ))
           ) : (
@@ -135,7 +143,8 @@ const State_Slide = () => {
             </Typography>
           )}
         </Slider>
-      </Container>
+      </Box>
+      {/* </Container> */}
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import './css/Footer.css'
 
 const Footer = () => {
     return (
+        <>
         <footer>
             <div className="quick_links footr">
                 <p>Quick Links</p>
@@ -23,6 +24,7 @@ const Footer = () => {
                 <a href="#">1234567890</a>
             </div>
         </footer>
+        </>
     );
 }
 

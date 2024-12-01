@@ -112,7 +112,7 @@ const Semi_State_Detail_Card = () => {
                   {section === "war_history" && item.war_description.slice(0,100)}
                   {section === "origin_history" && item.origin_description.slice(0, 250)}
                   {section === "product" && item.product_description.slice(0,100)}
-                  {section === "product" && item.dance_description.slice(0,100)}
+                  {section === "dance" && item.dance_description.slice(0,100)}
                 </Typography>
               </CardContent>
             </div>

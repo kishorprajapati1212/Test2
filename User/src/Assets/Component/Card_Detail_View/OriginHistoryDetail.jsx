@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Box, Grid, Typography, Paper, Button, CardMedia, Divider } from "@mui/material";
+import React from "react";
+import { Box, Grid, Typography, Paper, CardMedia, Divider, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styles
 
@@ -12,12 +13,6 @@ const OriginDetail = ({ data }) => {
     state_name,
     today_Status,
   } = data;
-
-  const [showSummary, setShowSummary] = useState(true);
-
-  const toggleView = () => {
-    setShowSummary((prev) => !prev);
-  };
 
   // Format the description by breaking down sections
   const formatDescription = (description) => {
@@ -33,15 +28,24 @@ const OriginDetail = ({ data }) => {
   return (
     <Box sx={{ padding: "20px", backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
       <Grid container spacing={3}>
-        {/* Left Section: Images */}
-        <Grid item xs={12} md={5}>
+        {/* Full Width Section: Carousel */}
+        <Grid item xs={12}>
           {origin_image && origin_image.length > 0 && (
-            <Carousel>
+            <Carousel
+              autoPlay={true}
+              interval={5000}
+              infiniteLoop={true}
+              showArrows={false}
+              showThumbs={false}
+              swipeable={true}
+              transitionTime={1000}
+              dynamicHeight={true}
+            >
               {origin_image.map((image, index) => (
                 <div key={index}>
                   <CardMedia
                     component="img"
-                    height="300"
+                    height="400"
                     image={image}
                     alt={`Origin Image ${index + 1}`}
                     sx={{ borderRadius: "8px", boxShadow: 3 }}
@@ -52,8 +56,8 @@ const OriginDetail = ({ data }) => {
           )}
         </Grid>
 
-        {/* Right Section: Details */}
-        <Grid item xs={12} md={7}>
+        {/* Right Section: Details (below slider) */}
+        <Grid item xs={12} >
           <Paper
             sx={{
               padding: "20px",
@@ -78,34 +82,19 @@ const OriginDetail = ({ data }) => {
               <strong>Today's Status:</strong> {today_Status || "N/A"}
             </Typography>
 
-            {/* Toggle Button */}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={toggleView}
-              sx={{ marginBottom: "20px" }}
-            >
-              {showSummary ? "Show Detailed Description" : "Show Summary"}
-            </Button>
-
-            {/* Conditional Rendering: Summary or Detailed Description */}
-            {showSummary ? (
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                  Summary
-                </Typography>
-                <Typography variant="body1" paragraph>
-                  {origin_description?.split("\n").slice(0, 3).join(" ")}...
-                </Typography>
-              </Box>
-            ) : (
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                  Detailed Description
-                </Typography>
+            {/* Accordion for Description */}
+            <Accordion defaultExpanded>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography variant="h6">Origin Description</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
                 {formatDescription(origin_description)}
-              </Box>
-            )}
+              </AccordionDetails>
+            </Accordion>
           </Paper>
         </Grid>
       </Grid>

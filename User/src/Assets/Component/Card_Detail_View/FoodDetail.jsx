@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Grid, Typography, Paper, Box, Divider, CardMedia, Button, Chip } from "@mui/material";
+import React from "react";
+import { Grid, Typography, Box, Divider, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styles
 
-// This is the component for displaying food details
 const FoodDetail = ({ data }) => {
   const {
     food_name,
@@ -11,42 +11,36 @@ const FoodDetail = ({ data }) => {
     famous_for,
     recipes,
     famous_location,
-    origi_story,
+    origin_story,
   } = data;
 
-  const [showSummary, setShowSummary] = useState(true);
-
-  const toggleView = () => {
-    setShowSummary((prev) => !prev);
-  };
-
   return (
-    <Box sx={{ padding: "40px", backgroundColor: "#f8f8f8", minHeight: "100vh" }}>
-      <Grid container spacing={4}>
-        {/* Left section with the food images */}
-        <Grid item xs={12} md={5}>
-          {/* Display multiple images using carousel */}
+    <Box sx={{ padding: "20px", backgroundColor: "#f4f4f4" }}>
+      <Grid container spacing={3}>
+        {/* Full Width Image Slider */}
+        <Grid item xs={12}>
           {food_image && food_image.length > 0 && (
             <Carousel
               autoPlay={true}
-              interval={4000}
+              interval={5000}
               infiniteLoop={true}
               showArrows={false}
               showThumbs={false}
               swipeable={true}
+              transitionTime={1000}
               dynamicHeight={true}
             >
               {food_image.map((image, index) => (
                 <div key={index}>
-                  <CardMedia
-                    component="img"
-                    height="350"
-                    image={image}
+                  <img
+                    src={image}
                     alt={`${food_name} image ${index + 1}`}
-                    sx={{
-                      borderRadius: "12px",
-                      boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-                      objectFit: "cover",
+                    style={{
+                      width: "100%",
+                      height: "350px", // Set a fixed height for the slider images
+                      objectFit: "cover", // Ensure the image covers the area without stretching
+                      borderRadius: "8px",
+                      boxShadow: 3,
                     }}
                   />
                 </div>
@@ -55,96 +49,79 @@ const FoodDetail = ({ data }) => {
           )}
         </Grid>
 
-        {/* Right section with food name and details */}
-        <Grid item xs={12} md={7}>
-          <Paper
-            sx={{
-              padding: "30px",
-              backgroundColor: "#ffffff",
-              borderRadius: "12px",
-              boxShadow: "0 6px 18px rgba(0, 0, 0, 0.1)",
-              minHeight: "450px",
-            }}
-          >
-            <Typography variant="h3" gutterBottom sx={{ fontWeight: "600", color: "#2c3e50" }}>
-              {food_name}
+        {/* Food Overview Section */}
+        <Grid item xs={12}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", color: "#1976d2" }}>
+            {food_name}
+          </Typography>
+
+          <Divider sx={{ marginBottom: "20px" }} />
+
+          {/* Food Summary */}
+          <Box>
+            <Typography variant="body1" paragraph>
+              <strong>Famous Location:</strong> {famous_location}
             </Typography>
+          </Box>
+        </Grid>
+      </Grid>
 
-            <Divider sx={{ marginBottom: "20px" }} />
+      {/* Details Section - accordion */}
+      <Grid container spacing={3} sx={{ marginTop: "30px" }}>
+        {/* Ingredients */}
+        <Grid item xs={12} md={6}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header">
+              <Typography variant="h6">Ingredients</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1" paragraph>
+                {recipes || "No details available."}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
 
-            {/* Toggle between Summary and Detailed Information */}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={toggleView}
-              sx={{ marginBottom: "20px" }}
-            >
-              {showSummary ? "Show Details" : "Show Summary"}
-            </Button>
+        {/* Origin Story */}
+        <Grid item xs={12} md={6}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2-content" id="panel2-header">
+              <Typography variant="h6">Origin Story</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1" paragraph>
+                {origin_story || "No details available."}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
 
-            {/* Conditional rendering based on showSummary state */}
-            {showSummary ? (
-              <Box>
-                {/* Summary Section */}
-                <Typography variant="h6" sx={{ fontWeight: "600", marginBottom: "10px", color: "#333" }}>
-                  Summary
-                </Typography>
-                {famous_for && (
-                  <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
-                    <strong>Famous For:</strong> {famous_for}
-                  </Typography>
-                )}
+        {/* Famous Location */}
+        <Grid item xs={12} md={6}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel3-content" id="panel3-header">
+              <Typography variant="h6">Famous For</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1" paragraph>
+                {famous_for || "No details available."}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </Grid>
 
-                {famous_location && (
-                  <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
-                    <strong>Famous Location:</strong> {famous_location}
-                  </Typography>
-                )}
-                <Chip
-                  label="Himachal Pradesh"
-                  sx={{
-                    marginTop: "10px",
-                    backgroundColor: "#1976d2",
-                    color: "#ffffff",
-                    borderRadius: "20px",
-                    fontWeight: "600",
-                  }}
-                />
-              </Box>
-            ) : (
-              <Box>
-                {/* Detail Section */}
-                <Typography variant="h6" sx={{ fontWeight: "600", marginBottom: "10px", color: "#333" }}>
-                  Detailed Information
-                </Typography>
-                {recipes && (
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
-                      Ingredients:
-                    </Typography>
-                    <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
-                      {recipes.split("\no\t").map((recipe, index) => (
-                        <Typography key={index} variant="body2" paragraph sx={{ fontSize: "1rem" }}>
-                          - {recipe}
-                        </Typography>
-                      ))}
-                    </Typography>
-                  </Box>
-                )}
-
-                {origi_story && (
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: "bold", color: "#000" }}>
-                      Origin Story:
-                    </Typography>
-                    <Typography variant="body1" paragraph sx={{ fontSize: "1.1rem", color: "#555" }}>
-                      {origi_story}
-                    </Typography>
-                  </Box>
-                )}
-              </Box>
-            )}
-          </Paper>
+        {/* Famous For */}
+        <Grid item xs={12} md={6}>
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel4-content" id="panel4-header">
+              <Typography variant="h6">Famous For</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography variant="body1" paragraph>
+                {famous_for || "No details available."}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
         </Grid>
       </Grid>
     </Box>

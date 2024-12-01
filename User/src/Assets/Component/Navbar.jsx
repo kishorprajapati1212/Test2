@@ -175,7 +175,12 @@ const Navbar = () => {
                 component={Link}
                 to={item.link}
                 onClick={toggleDrawer}
-                sx={{backgroundColor:"transparent"}}
+                sx={{backgroundColor:"transparent",
+                "& .MuiListItemText-primary": {
+                  color: "white", // Set the text color to white
+                },
+                }}
+                
               >
                 <ListItemIcon sx={{ color: "white" }}>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />

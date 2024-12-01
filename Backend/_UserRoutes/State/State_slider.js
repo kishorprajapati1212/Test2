@@ -7,6 +7,7 @@ const Placemodel = require("../../_Model/Famous_things/Place");
 const WarHistorymodel = require("../../_Model/History/Warhistory")
 const originHistory = require("../../_Model/History/Birthhistory")
 const danceModel = require("../../_Model/Famous_things/Dance");
+const Shortmodel = require("../../_Model/Video_features/Shorts")
 
 const router = express.Router();
 
@@ -21,10 +22,12 @@ router.get("/State_Home_Slider_Content/:stateId", async (req, res) => {
 
             Foodmodel.find({ stateId }).limit(3), // Get 3 places related to the stateId
         ]);
+        const state_name = await Statemodel.findOne({ stateId }).select("state_name");
 
         // Combine the data into a single JSON response
         const result = {
             food, // 3 places
+            state_name 
         };
 
         // Send the response with combined data
@@ -111,7 +114,7 @@ router.get("/state_detail/:stateId/:section/:itemId", async (req, res) => {
 
     try {
         // Fetch data from the corresponding model using `findById`
-        const detail = await model.findById({_id:itemId});
+        const detail = await model.findById({ _id: itemId });
         if (!detail) {
             return res.status(404).json({ message: "Detail not found" });
         }
@@ -119,6 +122,51 @@ router.get("/state_detail/:stateId/:section/:itemId", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server error" });
+    }
+});
+
+
+
+router.get("/Home_Page_Attractions", async (req, res) => {
+    try {
+        // Step 1: Get the total count of documents in the collection
+        const totalCount = await Placemodel.countDocuments();
+
+        // Step 2: Generate a random index to select a starting point
+        const randomIndex = Math.floor(Math.random() * totalCount);
+
+        // Step 3: Fetch 4 random places starting from the random index
+        const randomPlaces = await Placemodel.find()
+            .skip(randomIndex) // Skip to the random index
+            .limit(4) // Limit to 4 documents
+
+        // Step 4: Respond with the random places
+        res.status(200).json(randomPlaces);
+    } catch (error) {
+        console.error("Error fetching random places:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+router.get("/Home_Page_Shorts", async (req, res) => {
+    try {
+        // Step 1: Get the total count of documents in the collection
+        const totalCount = await Shortmodel.countDocuments();
+
+        // Step 2: Generate a random index to select a starting point
+        const randomIndex = Math.floor(Math.random() * totalCount);
+
+        // Step 3: Fetch 4 random places starting from the random index
+        const randomShorts = await Shortmodel.find()
+            .skip(randomIndex) // Skip to the random index
+            .limit(4) // Limit to 4 documents
+
+        // Step 4: Respond with the random places
+        res.status(200).json(randomShorts);
+    } catch (error) {
+        console.error("Error fetching random places:", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 

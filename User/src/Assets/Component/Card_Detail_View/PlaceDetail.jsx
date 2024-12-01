@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Grid, Typography, Paper, Box, Divider, CardMedia, Button } from "@mui/material";
+import React from "react";
+import { Grid, Typography, Paper, Box, Divider, CardMedia, Accordion, AccordionSummary, AccordionDetails, Button } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // Carousel styles
 
@@ -14,26 +15,21 @@ const PlaceDetail = ({ data }) => {
     Period,
     description,
     google_map_url,
+    HeritageId,
   } = data;
 
-  const [showSummary, setShowSummary] = useState(true);
-
-  const toggleView = () => {
-    setShowSummary((prev) => !prev);
-  };
-
   return (
-    <Box sx={{ padding: "20px", backgroundColor: "#f9f9f9" }}>
+    <Box sx={{ padding: "20px", backgroundColor: "#f9f9f9", minHeight: "100vh" }}>
       <Grid container spacing={3}>
-        {/* Left section with the place images */}
-        <Grid item xs={12} md={5}>
+        {/* Full Width Section: Carousel */}
+        <Grid item xs={12}>
           {place_image && place_image.length > 0 && (
-            <Carousel>
+            <Carousel autoPlay interval={3000} infiniteLoop>
               {place_image.map((image, index) => (
                 <div key={index}>
                   <CardMedia
                     component="img"
-                    height="300"
+                    height="400"
                     image={image}
                     alt={`${place_name} image ${index + 1}`}
                     sx={{ borderRadius: "8px", boxShadow: 3 }}
@@ -44,8 +40,8 @@ const PlaceDetail = ({ data }) => {
           )}
         </Grid>
 
-        {/* Right section with place details */}
-        <Grid item xs={12} md={7}>
+        {/* Full Width Section: Details (below carousel) */}
+        <Grid item xs={12}>
           <Paper
             sx={{
               padding: "20px",
@@ -60,20 +56,16 @@ const PlaceDetail = ({ data }) => {
 
             <Divider sx={{ marginBottom: "20px" }} />
 
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={toggleView}
-              sx={{ marginBottom: "20px" }}
-            >
-              {showSummary ? "Show Details" : "Show Summary"}
-            </Button>
-
-            {showSummary ? (
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                  Summary
-                </Typography>
+            {/* Accordion for Metadata */}
+            <Accordion defaultExpanded>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography variant="h6">Place Details</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
                 {state_name && (
                   <Typography variant="body1" paragraph>
                     <strong>State:</strong> {state_name}
@@ -84,32 +76,72 @@ const PlaceDetail = ({ data }) => {
                     <strong>Location:</strong> {location}
                   </Typography>
                 )}
-                {significance && (
+                {significance && significance.length > 0 && (
                   <Typography variant="body1" paragraph>
                     <strong>Significance:</strong> {significance.join(", ")}
                   </Typography>
                 )}
-              </Box>
-            ) : (
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: "10px" }}>
-                  Detailed Information
+              </AccordionDetails>
+            </Accordion>
+
+
+            {/* Accordion for Period */}
+            <Accordion >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel3-content"
+                id="panel3-header"
+              >
+                <Typography variant="h6">Period</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body1" paragraph>
+                  <strong>Period:</strong> {Period}
                 </Typography>
-                {builder && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Builder:</strong> {builder}
-                  </Typography>
-                )}
-                {Period && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Period:</strong> {Period}
-                  </Typography>
-                )}
-                {description && (
-                  <Typography variant="body1" paragraph>
-                    <strong>Description:</strong> {description}
-                  </Typography>
-                )}
+              </AccordionDetails>
+            </Accordion>
+
+            {/* Accordion for Builder */}
+            <Accordion >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel4-content"
+                id="panel4-header"
+              >
+                <Typography variant="h6">Builder</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body1" paragraph>
+                  <strong>Builder:</strong> {builder}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
+            {/* Accordion for Description */}
+            <Accordion >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel5-content"
+                id="panel5-header"
+              >
+                <Typography variant="h6">Description</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body1" paragraph>
+                  {description}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+
+            {/* Google Maps URL */}
+            {google_map_url && (
+              <Box sx={{ marginTop: "20px" }}>
+                {/* <Typography variant="h6">View on Google Maps</Typography> */}
+                <a href={google_map_url} target="_blank" rel="noopener noreferrer">
+                  <Button variant="contained" color="primary" sx={{ marginTop: "10px" }}>
+                    Open Map
+                  </Button>
+                </a>
               </Box>
             )}
           </Paper>
