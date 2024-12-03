@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Box, Typography } from "@mui/material";
-import { Canvas, useFrame  } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Environment } from "@react-three/drei";
 import { Suspense } from "react";
 import { motion } from "framer-motion";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import * as THREE from "three";
 
-export const Model = ({ modelPath, keyProp }) => {
+// Model Component
+export const Model = ({ modelPath, keyProp, shouldAnimate }) => {
   const [fbx, setFbx] = useState(null);
   const [error, setError] = useState(null);
 
@@ -44,8 +45,8 @@ export const Model = ({ modelPath, keyProp }) => {
   }, [modelPath]);
 
   useFrame(() => {
-    if (fbx) {
-      fbx.rotation.y += 0.01;
+    if (fbx && shouldAnimate) {
+      fbx.rotation.y += 0.01; // Rotate only when animation is enabled
     }
   });
 
@@ -68,6 +69,7 @@ export const Model = ({ modelPath, keyProp }) => {
   );
 };
 
+// ProductDisplay Component
 const ProductDisplay = () => {
   const canvasRef = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
@@ -108,6 +110,7 @@ const ProductDisplay = () => {
         overflow: "hidden",
       }}
     >
+      {/* Text Section */}
       <Box
         sx={{
           width: "40%",
@@ -165,6 +168,7 @@ const ProductDisplay = () => {
         </motion.div>
       </Box>
 
+      {/* Canvas Section */}
       <Box
         ref={canvasRef}
         sx={{
@@ -177,38 +181,36 @@ const ProductDisplay = () => {
           cursor: "pointer",
         }}
       >
-        {isVisible && (
-          <Canvas
-            shadows
-            camera={{ position: [3, 2, 8], fov: 50 }}
-            gl={{ antialias: true }}
-          >
-            <ambientLight intensity={5} color="#FFFACD" />
-            <spotLight
-              position={[0, 10, 0]}
-              angle={0.8}
-              penumbra={1}
-              intensity={300}
-              color={"#FFD700"}
-              castShadow
-              shadow-mapSize-width={2048}
-              shadow-mapSize-height={2048}
-            />
-            <spotLight
-              position={[-3, 8, 5]}
-              angle={0.5}
-              penumbra={1}
-              intensity={30}
-              color={"#FF4500"}
-              castShadow
-            />
-            <Suspense fallback={null}>
-              <Model modelPath={model.modelPath} keyProp={model.title} />
-            </Suspense>
-            <Environment preset="sunset" />
-            <OrbitControls enableZoom={false} />
-          </Canvas>
-        )}
+        <Canvas
+          shadows
+          camera={{ position: [3, 2, 8], fov: 50 }}
+          gl={{ antialias: true }}
+        >
+          <ambientLight intensity={5} color="#FFFACD" />
+          <spotLight
+            position={[0, 10, 0]}
+            angle={0.8}
+            penumbra={1}
+            intensity={300}
+            color={"#FFD700"}
+            castShadow
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
+          />
+          <spotLight
+            position={[-3, 8, 5]}
+            angle={0.5}
+            penumbra={1}
+            intensity={30}
+            color={"#FF4500"}
+            castShadow
+          />
+          <Suspense fallback={null}>
+            <Model modelPath={model.modelPath} keyProp={model.title} shouldAnimate={isVisible} />
+          </Suspense>
+          <Environment preset="sunset" />
+          <OrbitControls enableZoom={false} />
+        </Canvas>
       </Box>
     </Box>
   );
