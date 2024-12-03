@@ -1,49 +1,47 @@
-:root {
-  --clr-neutral-900: hsl(207, 19%, 9%);
-  --clr-neutral-100: hsl(0, 0%, 100%);
-  /* --clr-accent-400: hsl(142, 90%, 61%); */
+.Attr-container{
+  margin: 10px 0 ;
 }
 
-.Attr-container {
-  margin: 10px 0;
-  /* background-color: beige; */
-  padding: 10px 20px;
-  background-color: bisque;
-}
-
-.Attr-heading {
+.Attr-container .Attr-heading{
   text-align: center;
-  color: black;
-  font-size: 40px;
-  font-family: var(--Font);
-  margin: 20px;
+}
+
+
+
+.Attr-card{
+  height: 60vh;
 }
 
 .Attr-card-container {
+  height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 20px;
+  padding: 40px;
+  /* background-color: blue; */
+  display: flex; /* Enable flex layout */
+  flex-wrap: wrap; /* Allow wrapping for responsive design */
+  gap: 20px; /* Add spacing between cards */
+  justify-content: center; /* Center cards horizontally */
+  align-items: center; /* Align items to stretch vertically */
+  
 }
 
 .Attr-card {
-  font-family: var(--Font);
-  color: var(--clr-neutral-100);
+  color: white;
   background-size: cover;
-  padding: 10rem 0 0;
-  max-width: 35ch;
+  padding: 2rem; /* Adjust padding for a more flexible layout */
+  width: 300px; /* Set a consistent width for the cards */
   border-radius: 0.5rem;
   overflow: hidden;
-  transition: transform 500ms ease;
-  cursor:"pointer";
-  transition: 1s ease-in-out;
+  transition: transform 500ms ease, background-color 500ms ease;
+  cursor: pointer;
+  display: flex; /* Apply flex to card for inner alignment */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: flex-end; /* Align content at the bottom */
 }
 
 .Attr-card:hover,
 .Attr-card:focus-within {
   transform: scale(1.05);
-  cursor:"pointer";
 }
 
 .Attr-card-content {
@@ -52,105 +50,62 @@
   background: linear-gradient(
     hsl(0 0% 0% / 0),
     hsl(20 0% 0% / 0.3) 20%,
-    hsl(0 0% 0% / 1)
+    hsl(0 0% 0% / 0.5)
   );
-}
-
-.Attr-card-title {
   position: relative;
-  width: max-content;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: opacity 500ms ease, transform 500ms ease;
 }
 
-.Attr-card:hover .Attr-card-title::after,
-.Attr-card:focus-within .Attr-card-title::after {
-  transform: scaleX(1);
-  cursor:"pointer";
+.Attr-card:hover .Attr-card-content,
+.Attr-card:focus-within .Attr-card-content {
+  transform: translateY(10%);
+  opacity: 1;
 }
 
-.Attr-card-title::after {
-  content: "";
-  position: absolute;
-  height: 4px;
-  width: calc(100% + var(--padding));
-  left: calc(var(--padding) * -1);
-  bottom: -2px;
-  background: var(--clr-accent-400);
-  transform-origin: left;
-  transition: transform 500ms ease;
+.Attr-card-content > * {
+  opacity: 0;
+  transition: opacity 500ms ease;
 }
 
-@media (hover) {
-  .Attr-card-content {
-    transform: translateY(65%);
-    transition: transform 500ms ease;
-  }
-
-  .Attr-card-content > *:not(.Attr-card-title) {
-    opacity: 0;
-    transition: opacity 500ms linear;
-  }
-
-  .Attr-card:hover .Attr-card-content > *:not(.Attr-card-title),
-  .Attr-card:focus-within .Attr-card-content > *:not(.Attr-card-title) {
-    opacity: 1;
-    transition-delay: 700ms;
-  }
-
-  .Attr-card:hover .Attr-card-content,
-  .Attr-card:focus-within .Attr-card-content {
-    transform: translateY(0);
-    transition-delay: 500ms;
-    
-  }
-
-  .Attr-card:focus-within .Attr-card-content {
-    transition-duration: 0ms;
-  }
-
-  .Attr-card-title::after {
-    transform: scaleX(0);
-  }
+.Attr-card:hover .Attr-card-content > *,
+.Attr-card:focus-within .Attr-card-content > * {
+  opacity: 1;
 }
 
 .Attr-button {
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
-  color: var(--clr-neutral-900);
-  background-color: var(--clr-accent-400);
+  background-color: white;
+  color: black;
   padding: 0.5em 1.25em;
   border-radius: 0.25rem;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 .Attr-button:hover,
 .Attr-button:focus {
   background-color: var(--clr-neutral-100);
+  color: var(--clr-neutral-900);
 }
 
-.Attr-card-body {
-  color: rgb(255, 255, 255 / 0.85);
-}
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-    transition-delay: 0ms !important;
-  }
-}
 
 @media (max-width: 768px) {
   .Attr-card-container {
-    grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
+    flex-wrap: wrap; /* Cards wrap to the next line */
+    gap: 15px; /* Adjust gap for smaller screens */
+  }
+
+  .Attr-card {
+    width: calc(50% - 10px); /* Two cards per row on medium screens */
   }
 }
 
 @media (max-width: 480px) {
-  .Attr-card-container {
-    grid-template-columns: 1fr; /* 1 card per row on very small screens */
+  .Attr-card {
+    width: 100%; /* One card per row on small screens */
   }
 }

@@ -5,6 +5,7 @@ import State_Information from "../Component/State_Main_Component/State_Informati
 import State_Slide from "../Component/State_Main_Component/State_Slider";
 import { Button, Box } from "@mui/material"; // Importing MUI Button
 import BackButton from "../Component/BackButton";
+import Formate from "../Component/State_Main_Component/Formate";
 
 
 const State_Home = () => {
@@ -16,6 +17,7 @@ const State_Home = () => {
       {/* Other Components */}
       <State_Slide />
       <State_Information />
+      {/* <Formate /> */}
       <State_Card />
     </>
   );

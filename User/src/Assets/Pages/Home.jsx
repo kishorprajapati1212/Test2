@@ -4,7 +4,7 @@
 // import States from "../Component/Home_components/StateHeader";
 // import TopReels from "../Component/Home_components/TopReels";
 // import "./css/home.css";
-import Product from "../../../Old_UI_Coponents/Home_components/Product";
+import Product from "../Component/New_Home_page/Product";
 import Attraction from "../Component/New_Home_page/Attr";
 import ShortsPage from "../Component/New_Home_page/ShortsPage";
 import Slider from "../Component/New_Home_page/Slider";
@@ -33,10 +33,10 @@ const Home = () => {
     <>
       {/* Home */}
       <Slider />
-      <State_Home />
+      <State_Home /> 
+      <Product /> 
       <Attraction />
-      <ShortsPage />
-      <Product />
+       <ShortsPage />
     
     </>
 

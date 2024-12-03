@@ -23,7 +23,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import Language from "./Navbar/Language";
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -72,21 +72,21 @@ const Navbar = () => {
   return (
     <Box>
       {/* AppBar */}
-      <AppBar position="sticky" sx={{ backgroundColor: "orange", boxShadow: "none" }}>
+      <AppBar position="sticky" sx={{ backgroundColor: 'black', boxShadow: "none" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           {/* Logo */}
           <Typography
             variant="h6"
             component={Link}
             to="/"
-            sx={{ fontWeight: "bold", textDecoration: "none", color: "inherit" }}
+            sx={{ fontWeight: "bold",fontSize:'25px', textDecoration: "none", color: "inherit" }}
           >
             Indian Heritage
           </Typography>
 
           {/* Search bar */}
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <InputBase
+            {/* <InputBase
               placeholder="Search…"
               value={searchQuery}
               onChange={handleSearchChange}
@@ -98,14 +98,14 @@ const Navbar = () => {
                 maxWidth: "300px",
                 marginLeft:"100px"
               }}
-            />
+            /> */}
             <IconButton sx={{ padding: "10px" }} onClick={handleSearchSubmit}>
-              <SearchIcon />
+              {/* <SearchIcon /> */}
             </IconButton>
           </Box>
 
           {/* Language Selector */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", marginTop:"4px" ,alignItems: "center", gap: 2 }}>
             <Language currentLanguage={language} onLanguageChange={handleLanguageChange} />
           </Box >
 
@@ -113,13 +113,13 @@ const Navbar = () => {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             {isLoggedIn ? (
               <>
-                <IconButton component={Link} to="/profile">
+                {/* <IconButton component={Link} to="/profile">
                   <AccountCircleIcon sx={{ color: "#fff" }} />
-                </IconButton>
+                </IconButton> */}
                 <Button
                   variant="outlined"
                   onClick={handleLogout}
-                  sx={{ color: "#000", borderColor: "#000", "&:hover": { backgroundColor: "#f1f1f1" } }}
+                  sx={{ color: "#fff", borderColor: "#000", "&:hover": { backgroundColor: "#f1f1f1" } }}
                 >
                   {translate("logout")}
                 </Button>
@@ -129,8 +129,8 @@ const Navbar = () => {
                 <Button
                   component={Link}
                   to="/login"
-                  variant="outlined"
-                  sx={{ color: "#000", borderColor: "#000", "&:hover": { backgroundColor: "#f1f1f1" } }}
+                  // variant="outlined"
+                  sx={{ backgroundColor: "#000", marginLeft:"25px",color: "#fff", "&:hover": { backgroundColor: "#333" } }}
                 >
                   {translate("login")}
                 </Button>
@@ -138,7 +138,7 @@ const Navbar = () => {
                   component={Link}
                   to="/sigin_home"
                   variant="contained"
-                  sx={{ backgroundColor: "#000", color: "#fff", "&:hover": { backgroundColor: "#333" } }}
+                  sx={{ backgroundColor: "#000",marginRight:"4px"  ,color: "#fff", "&:hover": { backgroundColor: "#333" } }}
                 >
                   {translate("signup")}
                 </Button>
